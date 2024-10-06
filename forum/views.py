@@ -20,3 +20,18 @@ def new_post(request):
 
     context = {"form": form}
     return render(request, "forum/new_post.html", context)
+
+
+def edit_post(request, post_id):
+    post = Post.objects.get(id=post_id)
+    if request.method == "POST":
+        form = PostForm(instance=post, data=request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect("forum:display_posts")
+    else:
+        initial_data = {"title": post.title, "content": post.content}
+        form = PostForm(instance=post, initial=initial_data)
+
+    context = {"post": post, "form": form}
+    return render(request, "forum/edit_post.html", context)

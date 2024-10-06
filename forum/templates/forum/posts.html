@@ -20,7 +20,7 @@
                     <small class="text-muted">{{ post.timestamp }}</small>
                 </div>
                 <!-- Edit post page-->
-                <h2><a class="post-name" href="#">{{ post.title }}</a></h2>
+                <h2><a class="post-name" href="{% url 'forum:edit_post' post.id %}">{{ post.title }}</a></h2>
             </div>
         </article>
     {% empty %}
