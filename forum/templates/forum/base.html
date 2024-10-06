@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- Webpage title -->
-    <title>DIT UOI Forum</title>
+    <title>DIT-UOI Forum - {% block title %}{% endblock title %}</title>
 
     <!-- Bootstrap CSS -->
     {% load django_bootstrap5 %}
@@ -21,6 +21,11 @@
 <body>
     <main role="main" class="container">
         <div class="row justify-content-center mt-lg-5 mt-3">
+            <div class="col-md-8 pb-2 mb-2">
+                <!-- custom page header start -->
+                {% block page_header %}{% endblock page_header %}
+                <!-- custom page header end -->
+            </div>
             <div class="col-md-8">
                 <!-- custom content start -->
                 {% block content %}{% endblock %}

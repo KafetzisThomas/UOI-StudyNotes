@@ -35,6 +35,8 @@ INSTALLED_APPS = [
     "forum",
     # Third-Party apps
     "django_bootstrap5",
+    "crispy_forms",
+    "crispy_bootstrap5",
     # Default django apps
     "django.contrib.admin",
     "django.contrib.auth",
@@ -55,6 +57,10 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = "main.urls"
+
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+
+CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 TEMPLATES = [
     {
