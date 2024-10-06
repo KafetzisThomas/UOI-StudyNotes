@@ -1,0 +1,27 @@
+{% extends "forum/base.html" %}
+{% load django_bootstrap5 %}
+
+{% block content %}
+    <h2 class="text-center">Posts</h2>
+    <div class="row">
+        <div class="col">
+            <hr class="mb-2 mt-0">
+        </div>
+    </div>
+
+    {% for post in posts %}
+        <article class="media post-section">
+            <div class="media-body">
+                <div class="post-metadata">
+                    <small class="text-muted">{{ post.timestamp }}</small>
+                </div>
+                <!-- Edit post page-->
+                <h2><a class="post-name" href="#">{{ post.title }}</a></h2>
+            </div>
+        </article>
+    {% empty %}
+        <div class="container text-center mt-3">
+            <h5>There are no posts.</h5>
+        </div>
+    {% endfor %}
+{% endblock content %}
