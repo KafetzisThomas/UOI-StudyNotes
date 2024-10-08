@@ -1,7 +1,7 @@
 {% extends "forum/base.html" %}
 {% load django_bootstrap5 %}
 
-{% block title %}Home Page{% endblock title %}
+{% block title %}DIT-UOI Forum{% endblock title %}
 
 {% block page_header %}
     <h2 class="text-center">Posts</h2>
@@ -20,7 +20,7 @@
                     <small class="text-muted">{{ post.timestamp }}</small>
                 </div>
                 <!-- Edit post page-->
-                <h2><a class="post-name" href="{% url 'forum:edit_post' post.id %}">{{ post.title }}</a></h2>
+                <h2><a class="post-name" href="{% url 'forum:post' post.id %}">{{ post.title }}</a></h2>
             </div>
         </article>
     {% empty %}

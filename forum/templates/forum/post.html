@@ -1,0 +1,28 @@
+{% extends "forum/base.html" %}
+{% load django_bootstrap5 %}
+
+{% block title %}{{ post.title }}{% endblock title %}
+
+{% block content %}
+    <div class="container mt-4 mb-4">
+        <div class="card">
+            <div class="card-header">
+                <h2>{{ post.title }}</h2>
+                <small class="text-muted">Posted on: {{ post.timestamp|date:"d F, Y H:i" }}</small>
+            </div>
+            <div class="card-body">
+                <p class="card-text">{{ post.content|linebreaks }}</p>
+                <div class="d-flex justify-content-between mt-4">
+                    <!-- back button -->
+                    <a href="{% url 'forum:display_posts' %}" class="btn btn-secondary">
+                        <i class="bi bi-arrow-left"></i> Back
+                    </a>
+                    <!-- edit button -->
+                    <a href="{% url 'forum:edit_post' post.id %}" class="btn btn-primary">
+                        <i class="bi bi-pencil-square"></i> Edit Post
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

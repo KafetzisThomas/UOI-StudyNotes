@@ -7,6 +7,8 @@ app_name = "forum"
 urlpatterns = [
     # Posts page
     path("", views.display_posts, name="display_posts"),
+    # Post page
+    path("post/<int:post_id>/", views.post, name="post"),
     # Create a new post page
     path("new_post/", views.new_post, name="new_post"),
     # Edit post page
