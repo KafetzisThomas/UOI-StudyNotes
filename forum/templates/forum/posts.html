@@ -13,12 +13,11 @@
 
 {% block content %}
     {% for post in posts %}
-        <article class="media post-section">
+        <article class="media post-section mb-4">
             <div class="media-body">
-                <div class="post-metadata">
-                    <small class="text-muted">{{ post.timestamp }}</small>
+                <div class="post-metadata mb-2">
+                    <small class="text-muted">{{ post.timestamp|date:"d F, Y H:i" }} <span class="badge bg-secondary ms-2">{{ post.topic }}</span> </small>
                 </div>
-                <!-- Edit post page-->
                 <h2><a class="post-name" href="{% url 'forum:post' post.id %}">{{ post.title }}</a></h2>
             </div>
         </article>
