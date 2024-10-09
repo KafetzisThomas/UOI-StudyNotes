@@ -1,0 +1,17 @@
+{% extends "forum/base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}Register{% endblock title %}
+
+{% block page_header %}
+    <h2>Create a free account.</h2>
+{% endblock page_header %}
+
+{% block content %}
+    <form method="POST" action="{% url 'users:register' %}">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <button name="submit" class="btn btn-primary">Sign Up</button>
+        <input type="hidden" name="next" value="{% url 'users:login' %}" />
+    </form>
+{% endblock content %}

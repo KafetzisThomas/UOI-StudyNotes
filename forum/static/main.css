@@ -1,3 +1,19 @@
+/* Navigation link styles */
+.nav-link {
+  color: #808080;
+  font-weight: 500;
+}
+
+/* Hover state styles for navigation links */
+.nav-link:hover {
+  color: #fff;
+}
+
+/* Active state styles for navigation links */
+.nav-link.active {
+  color: #fff;
+}
+
 /* Post styles */
 .post-section {
   background: #ffffff;

@@ -33,6 +33,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     # My apps
     "forum",
+    "users",
     # Third-Party apps
     "django_bootstrap5",
     "crispy_forms",
@@ -132,3 +133,7 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# Login and logout settings
+LOGIN_URL = "users:login"
+LOGOUT_REDIRECT_URL = "/"

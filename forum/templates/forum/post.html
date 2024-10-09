@@ -17,10 +17,12 @@
                     <a href="{% url 'forum:display_posts' %}" class="btn btn-secondary">
                         <i class="bi bi-arrow-left"></i> Back
                     </a>
-                    <!-- edit button -->
-                    <a href="{% url 'forum:edit_post' post.id %}" class="btn btn-primary">
-                        <i class="bi bi-pencil-square"></i> Edit Post
-                    </a>
+                    {% if request.user == post.user %}
+                        <!-- edit button -->
+                        <a href="{% url 'forum:edit_post' post.id %}" class="btn btn-primary">
+                            <i class="bi bi-pencil-square"></i> Edit Post
+                        </a>
+                    {% endif %}
                 </div>
             </div>
         </div>
