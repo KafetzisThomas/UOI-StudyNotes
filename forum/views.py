@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.http import Http404
-from .forms import PostForm
-from .models import Post
+from .forms import PostForm, CommentForm
+from .models import Post, Comment
 
 
 def display_posts(request):
@@ -13,7 +13,20 @@ def display_posts(request):
 
 def post(request, post_id):
     post = get_object_or_404(Post, id=post_id)
-    context = {"post": post}
+    comments = post.comments.all()
+
+    if request.method == "POST":
+        form = CommentForm(data=request.POST)
+        if form.is_valid():
+            new_comment = form.save(commit=False)
+            new_comment.user = request.user
+            new_comment.post = post
+            new_comment.save()
+            return redirect("forum:post", post_id=post_id)
+    else:
+        form = CommentForm()
+
+    context = {"form": form, "post": post, "comments": comments}
     return render(request, "forum/post.html", context)
 
 
