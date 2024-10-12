@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.http import Http404
+from django.urls import reverse
+from .utils import send_reply_notification
 from .forms import PostForm, CommentForm
 from .models import Post, TOPICS
 
@@ -28,6 +30,13 @@ def post(request, post_id):
             new_comment.user = request.user
             new_comment.post = post
             new_comment.save()
+            post_url = reverse("forum:post", args=[post.id])
+            send_reply_notification(
+                sender=new_comment.user,
+                receiver=post.user,
+                post_url=post_url,
+                comment=new_comment,
+            )
             return redirect("forum:post", post_id=post_id)
     else:
         form = CommentForm()
