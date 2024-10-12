@@ -32,7 +32,7 @@
             <div class="list-group">
                 {% for comment in comments %}
                     <div class="list-group-item">
-                        <p class="mb-1">{{ comment.content }}</p>
+                        <p class="mb-1">{{ comment.content|linebreaks }}</p>
                         {% if comment.user.is_staff %}
                             <small class="text-muted">By {{ comment.user.username }} <i class="bi bi-shield-shaded"></i> on {{ comment.timestamp|date:"d F, Y H:i" }}</small>
                         {% else %}
