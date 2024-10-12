@@ -27,7 +27,7 @@
                                 <i class="bi bi-pencil-square"></i>
                             </a>
                         {% endif %}
-                        <button class="btn btn-primary" type="button" data-toggle="tooltip" title="Reply" data-bs-toggle="collapse" data-bs-target="#replyForm-{{ post.id }}" aria-expanded="false" aria-controls="replyForm-{{ post.id }}">
+                        <button class="btn btn-primary reply-btn" type="button" data-toggle="tooltip" title="Reply" data-bs-toggle="collapse" data-bs-target="#replyForm-{{ post.id }}" aria-expanded="false" aria-controls="replyForm-{{ post.id }}">
                             <i class="bi bi-reply-fill"></i>
                         </button>
                     {% endif %}
@@ -88,4 +88,16 @@
         </div>
         <!-- Delete post modal end -->
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const replyBtn = document.querySelector('.reply-btn');
+            replyBtn.addEventListener('click', function (e) {
+                const targetForm = document.querySelector(this.getAttribute('data-bs-target'));
+                targetForm.addEventListener('shown.bs.collapse', function () {
+                    targetForm.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                });
+            });
+        });
+    </script>
 {% endblock content %}
