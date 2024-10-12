@@ -69,3 +69,12 @@ def edit_post(request, post_id):
 
     context = {"post": post, "form": form}
     return render(request, "forum/edit_post.html", context)
+
+
+@login_required
+def delete_post(request, post_id):
+    post = Post.objects.get(id=post_id)
+    if post.user != request.user:
+        raise Http404
+    post.delete()
+    return redirect("forum:display_posts")

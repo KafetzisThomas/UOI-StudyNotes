@@ -13,4 +13,6 @@ urlpatterns = [
     path("new_post/", views.new_post, name="new_post"),
     # Edit post page
     path("edit_post/<int:post_id>/", views.edit_post, name="edit_post"),
+    # Delete post page
+    path("edit_post/<int:post_id>/delete", views.delete_post, name="delete_post"),
 ]
