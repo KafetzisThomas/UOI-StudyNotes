@@ -2,12 +2,18 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.http import Http404
 from .forms import PostForm, CommentForm
-from .models import Post, Comment
+from .models import Post, TOPICS
 
 
 def display_posts(request):
+    # Retrieve selected topic from the query parameters
+    topic = request.GET.get("topic")
     posts = Post.objects.all().order_by("-timestamp")
-    context = {"posts": posts}
+
+    if topic:
+        posts = posts.filter(topic=topic)
+
+    context = {"posts": posts, "TOPICS": TOPICS}
     return render(request, "forum/posts.html", context)
 
 

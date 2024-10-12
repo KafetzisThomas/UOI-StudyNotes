@@ -34,6 +34,19 @@
                     <li class="nav-item">
                         <a class="nav-link {% if request.path == '/' %}active{% endif %}" href="{% url 'forum:display_posts' %}">Posts</a>
                     </li>
+                    {% if request.path == '/' %}
+                        <!-- topic filter dropdown -->
+                        <li class="nav-item">
+                            <form action="{% url 'forum:display_posts' %}" class="d-flex" method="GET">
+                                <select class="form-select form-select-sm ms-2 mt-1" name="topic" onchange="this.form.submit()">
+                                    <option value="" {% if not request.GET.topic %}selected{% endif %}>All Topics</option>
+                                    {% for key, value in TOPICS %}
+                                        <option value="{{ key }}" {% if request.GET.topic == key %}selected{% endif %}>{{ value }}</option>
+                                    {% endfor %}
+                                </select>
+                            </form>
+                        </li>
+                    {% endif %}
                 </ul>
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                     {% if user.is_authenticated %}
