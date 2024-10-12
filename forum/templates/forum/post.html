@@ -9,18 +9,28 @@
         <div class="card mb-4">
             <div class="card-header d-flex justify-content-between align-items-center">
                 <h2 class="mb-0">{{ post.title }}</h2>
-                <small class="text-muted"><span class="badge bg-secondary me-2">{{ post.topic }}</span>Posted on: {{ post.timestamp|date:"d F, Y H:i" }}</small>
+                <small class="text-muted">
+                    <span class="badge bg-secondary me-2">{{ post.topic }}</span>
+                    Posted on: {{ post.timestamp|date:"d F, Y H:i" }}
+                </small>
             </div>
             <div class="card-body">
                 <p class="card-text">{{ post.content|linebreaks }}</p>
-                <div class="d-flex justify-content-between mt-4">
+                <div class="d-flex float-start mt-4">
                     <a href="{% url 'forum:display_posts' %}" class="btn btn-secondary">
                         <i class="bi bi-arrow-left"></i> Back
                     </a>
-                    {% if request.user == post.user %}
-                        <a href="{% url 'forum:edit_post' post.id %}" class="btn btn-primary">
-                            <i class="bi bi-pencil-square"></i> Edit Post
-                        </a>
+                </div>
+                <div class="d-flex float-end mt-4">
+                    {% if user.is_authenticated %}
+                        {% if request.user == post.user %}
+                            <a href="{% url 'forum:edit_post' post.id %}" class="btn btn-primary" data-toggle="tooltip" title="Edit Post">
+                                <i class="bi bi-pencil-square"></i>
+                            </a>
+                        {% endif %}
+                        <button class="btn btn-primary ms-1" type="button" data-toggle="tooltip" title="Reply" data-bs-toggle="collapse" data-bs-target="#replyForm-{{ post.id }}" aria-expanded="false" aria-controls="replyForm-{{ post.id }}">
+                            <i class="bi bi-reply-fill"></i>
+                        </button>
                     {% endif %}
                 </div>
             </div>
@@ -47,18 +57,13 @@
 
         <hr>
 
+        <!-- reply/comment section -->
         <div>
-            <h4>Leave a comment:</h4>
-            
-            {% if user.is_authenticated %}
-                <form method="POST" class="mt-3">
-                    {% csrf_token %}
-                    {{ form|crispy }}
-                    <button type="submit" class="btn btn-success mt-2">Submit</button>
-                </form>
-            {% else %}
-                <p class="text-muted">You must be logged in to comment.</p>
-            {% endif %}
+            <form class="collapse mt-4" id="replyForm-{{ post.id }}" method="POST">
+                {% csrf_token %}
+                {{ form|crispy }}
+                <button type="submit" class="btn btn-success mt-2">Submit</button>
+            </form>
         </div>
     </div>
 {% endblock content %}
