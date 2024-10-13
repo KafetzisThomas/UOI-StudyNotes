@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseRedirect
 from django.http import Http404
 from django.urls import reverse
 from .utils import send_reply_notification
@@ -23,6 +24,12 @@ def post(request, post_id):
     post = get_object_or_404(Post, id=post_id)
     comments = post.comments.all()
 
+    # Like functionality
+    liked = False
+    if post.likes.filter(id=request.user.id).exists():
+        liked = True
+    number_of_likes = post.number_of_likes()
+
     if request.method == "POST":
         form = CommentForm(data=request.POST)
         if form.is_valid():
@@ -41,8 +48,24 @@ def post(request, post_id):
     else:
         form = CommentForm()
 
-    context = {"form": form, "post": post, "comments": comments}
+    context = {
+        "form": form,
+        "post": post,
+        "comments": comments,
+        "number_of_likes": number_of_likes,
+        "post_is_liked": liked,
+    }
     return render(request, "forum/post.html", context)
+
+
+def like_post(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+    if post.likes.filter(id=request.user.id).exists():
+        post.likes.remove(request.user)
+    else:
+        post.likes.add(request.user)
+
+    return HttpResponseRedirect(reverse("forum:post", args=[post_id]))
 
 
 @login_required

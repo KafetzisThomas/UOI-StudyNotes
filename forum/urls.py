@@ -9,6 +9,8 @@ urlpatterns = [
     path("", views.display_posts, name="display_posts"),
     # Post page
     path("post/<int:post_id>/", views.post, name="post"),
+    # Like post page
+    path("post/<int:post_id>/like_post", views.like_post, name="like_post"),
     # Create a new post page
     path("new_post/", views.new_post, name="new_post"),
     # Edit post page
