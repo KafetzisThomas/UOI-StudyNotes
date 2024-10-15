@@ -17,10 +17,10 @@
             <div class="media-body">
                 <div class="post-metadata mb-2">
                     <small class="text-muted">
-                        {{ post.timestamp|date:"d F, Y H:i" }} 
-                        <span class="badge bg-secondary ms-2">{{ post.topic }}</span> 
-                        <span class="badge bg-secondary ms-1">Replies: {{ post.comments.all|length }}</span> 
-                        <span class="badge bg-secondary ms-1">Likes: {{ post.number_of_likes }}</span>
+                        <span class="badge bg-secondary">Created: {{ post.timestamp|date:"d F, Y H:i" }}</span>
+                        <span class="badge bg-secondary">Topic: {{ post.topic }}</span>
+                        <span class="badge bg-secondary">Replies: {{ post.comments.all|length }}</span>
+                        <span class="badge bg-secondary">Likes: {{ post.number_of_likes }}</span>
                     </small>
                 </div>
                 <h2><a class="post-name" href="{% url 'forum:post' post.id %}">{{ post.title }}</a></h2>
