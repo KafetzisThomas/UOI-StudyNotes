@@ -19,7 +19,7 @@
                     <small class="text-muted">
                         <span class="badge bg-secondary">Created: {{ post.timestamp|date:"d F, Y H:i" }}</span>
                         <span class="badge bg-secondary">Topic: {{ post.topic }}</span>
-                        <span class="badge bg-secondary">Replies: {{ post.comments.all|length }}</span>
+                        <span class="badge bg-secondary">Replies: {{ post.replies.all|length }}</span>
                         <span class="badge bg-secondary">Likes: {{ post.number_of_likes }}</span>
                     </small>
                 </div>

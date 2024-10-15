@@ -4,7 +4,7 @@ from django.http import HttpResponseRedirect
 from django.http import Http404
 from django.urls import reverse
 from .utils import send_reply_notification
-from .forms import PostForm, CommentForm
+from .forms import PostForm, ReplyForm
 from .models import Post, TOPICS
 
 
@@ -22,7 +22,7 @@ def display_posts(request):
 
 def post(request, post_id):
     post = get_object_or_404(Post, id=post_id)
-    comments = post.comments.all()
+    replies = post.replies.all()
 
     # Like functionality
     liked = False
@@ -31,27 +31,27 @@ def post(request, post_id):
     number_of_likes = post.number_of_likes()
 
     if request.method == "POST":
-        form = CommentForm(data=request.POST)
+        form = ReplyForm(data=request.POST)
         if form.is_valid():
-            new_comment = form.save(commit=False)
-            new_comment.user = request.user
-            new_comment.post = post
-            new_comment.save()
+            new_reply = form.save(commit=False)
+            new_reply.user = request.user
+            new_reply.post = post
+            new_reply.save()
             post_url = reverse("forum:post", args=[post.id])
             send_reply_notification(
-                sender=new_comment.user,
+                sender=new_reply.user,
                 receiver=post.user,
                 post_url=post_url,
-                comment=new_comment,
+                reply=new_reply,
             )
             return redirect("forum:post", post_id=post_id)
     else:
-        form = CommentForm()
+        form = ReplyForm()
 
     context = {
         "form": form,
         "post": post,
-        "comments": comments,
+        "replies": replies,
         "number_of_likes": number_of_likes,
         "post_is_liked": liked,
     }

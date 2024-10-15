@@ -46,27 +46,27 @@
             </div>
         </div>
 
-        <!-- comments section -->
+        <!-- replies section -->
         <div>
             <div class="list-group">
-                {% for comment in comments %}
+                {% for reply in replies %}
                     <div class="list-group-item">
-                        <p class="mb-1">{{ comment.content|linebreaks }}</p>
-                        {% if comment.user.is_staff %}
-                            <small class="text-muted">By {{ comment.user.username }} <i class="bi bi-shield-shaded"></i> on {{ comment.timestamp|date:"d F, Y H:i" }}</small>
+                        <p class="mb-1">{{ reply.content|linebreaks }}</p>
+                        {% if reply.user.is_staff %}
+                            <small class="text-muted">By {{ reply.user.username }} <i class="bi bi-shield-shaded"></i> on {{ reply.timestamp|date:"d F, Y H:i" }}</small>
                         {% else %}
-                            <small class="text-muted">By {{ comment.user.username }} on {{ comment.timestamp|date:"d F, Y H:i" }}</small>
+                            <small class="text-muted">By {{ reply.user.username }} on {{ reply.timestamp|date:"d F, Y H:i" }}</small>
                         {% endif %}
                     </div>
                 {% empty %}
-                    <p class="text-muted">No comments yet.</p>
+                    <p class="text-muted">No replies yet.</p>
                 {% endfor %}
             </div>
         </div>
 
         <hr>
 
-        <!-- reply/comment section -->
+        <!-- reply section -->
         <div>
             <form class="collapse mt-4" id="replyForm-{{ post.id }}" method="POST">
                 {% csrf_token %}
