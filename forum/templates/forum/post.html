@@ -102,11 +102,17 @@
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const replyBtn = document.querySelector('.reply-btn');
-            replyBtn.addEventListener('click', function (e) {
+            replyBtn.addEventListener('click', function () {
                 const targetForm = document.querySelector(this.getAttribute('data-bs-target'));
                 targetForm.addEventListener('shown.bs.collapse', function () {
+                    // Scroll to the form after pressing the reply button
                     targetForm.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                });
+
+                    // Focus the content field (textarea)
+                    const textarea = targetForm.querySelector('textarea');
+                    textarea.focus();
+
+                }, { once: true });  // Trigger once per click, avoid duplicate event listeners
             });
         });
     </script>
