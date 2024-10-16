@@ -10,8 +10,11 @@
             <div class="card-header d-flex justify-content-between align-items-center">
                 <h2 class="mb-0">{{ post.title }}</h2>
                 <small class="text-muted">
-                    <span class="badge bg-secondary me-2">{{ post.topic }}</span>
-                    Posted on: {{ post.timestamp|date:"d F, Y H:i" }}
+                    <span class="badge bg-secondary">By: {{ post.user.username }}</span>
+                    <span class="badge bg-secondary">Topic: {{ post.topic }}</span>
+                    <span class="badge bg-secondary">Replies: {{ post.replies.all|length }}</span>
+                    <span class="badge bg-secondary">Likes: {{ post.number_of_likes }}</span>
+                    <span class="badge bg-secondary">Created: {{ post.timestamp|date:"d F, Y H:i" }}</span>
                 </small>
             </div>
             <div class="card-body">
