@@ -3,6 +3,7 @@ crispy-bootstrap5==2024.10
 Django==5.1.1
 django-bootstrap5==24.3
 django-crispy-forms==2.3
+django-extensions==3.2.3
 python-dotenv==1.0.1
 sqlparse==0.5.1
 typing_extensions==4.12.2
