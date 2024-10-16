@@ -19,7 +19,7 @@ def display_posts(request):
     page_obj = paginator.get_page(page_number)
 
     if topic:
-        posts = posts.filter(topic=topic)
+        page_obj = posts.filter(topic=topic)
 
     context = {"page_obj": page_obj, "TOPICS": TOPICS}
     return render(request, "forum/posts.html", context)
