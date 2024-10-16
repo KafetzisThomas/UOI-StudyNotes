@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
+from django.core.paginator import Paginator
 from django.http import Http404
 from django.urls import reverse
 from .utils import send_reply_notification
@@ -13,10 +14,14 @@ def display_posts(request):
     topic = request.GET.get("topic")
     posts = Post.objects.all().order_by("-timestamp")
 
+    paginator = Paginator(posts, 10)  # Display 10 posts per page
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+
     if topic:
         posts = posts.filter(topic=topic)
 
-    context = {"posts": posts, "TOPICS": TOPICS}
+    context = {"page_obj": page_obj, "TOPICS": TOPICS}
     return render(request, "forum/posts.html", context)
 
 
