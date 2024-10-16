@@ -38,12 +38,13 @@ def post(request, post_id):
             new_reply.post = post
             new_reply.save()
             post_url = reverse("forum:post", args=[post.id])
-            send_reply_notification(
-                sender=new_reply.user,
-                receiver=post.user,
-                post_url=post_url,
-                reply=new_reply,
-            )
+            if new_reply.user != post.user:
+                send_reply_notification(
+                    sender=new_reply.user,
+                    receiver=post.user,
+                    post_url=post_url,
+                    reply=new_reply,
+                )
             return redirect("forum:post", post_id=post_id)
     else:
         form = ReplyForm()
