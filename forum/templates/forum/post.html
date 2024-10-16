@@ -56,7 +56,7 @@
                     <div class="list-group-item">
                         <p class="mb-1">{{ reply.content|linebreaks }}</p>
                         {% if reply.user.is_staff %}
-                            <small class="text-muted">By {{ reply.user.username }} <i class="bi bi-shield-shaded"></i> on {{ reply.timestamp|date:"d F, Y H:i" }}</small>
+                            <small class="text-muted">By {{ reply.user.username }} <i class="bi bi-shield-shaded" data-toggle="tooltip" title="This user is a moderator"></i> on {{ reply.timestamp|date:"d F, Y H:i" }}</small>
                         {% else %}
                             <small class="text-muted">By {{ reply.user.username }} on {{ reply.timestamp|date:"d F, Y H:i" }}</small>
                         {% endif %}
