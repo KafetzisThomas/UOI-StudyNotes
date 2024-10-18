@@ -10,18 +10,25 @@ from .models import Post, TOPICS
 
 
 def display_posts(request):
-    # Retrieve selected topic from the query parameters
+    # Retrieve selected topic & search query,
+    # from the query parameters
     topic = request.GET.get("topic")
+    search_query = request.GET.get("search_query")
     posts = Post.objects.all().order_by("-timestamp")
+
+    # Filter posts by search query in the title if provided
+    if search_query:
+        posts = posts.filter(title__icontains=search_query)
+
+    # Filter posts by topic if a topic is selected
+    if topic:
+        posts = posts.filter(topic=topic)
 
     paginator = Paginator(posts, 10)  # Display 10 posts per page
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
 
-    if topic:
-        page_obj = posts.filter(topic=topic)
-
-    context = {"page_obj": page_obj, "TOPICS": TOPICS}
+    context = {"page_obj": page_obj, "TOPICS": TOPICS, "search_query": search_query}
     return render(request, "forum/posts.html", context)
 
 
