@@ -4,6 +4,14 @@
 {% block title %}{{ post.title }}{% endblock title %}
 
 {% block content %}
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-success text-center" role="alert">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
     <div class="container mt-4 mb-4">
         <!-- post section -->
         <div class="card mb-4">

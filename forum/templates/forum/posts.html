@@ -12,6 +12,14 @@
 {% endblock page_header %}
 
 {% block content %}
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-success text-center" role="alert">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
     {% for post in page_obj %}
         <article class="media post-section mb-4">
             <div class="media-body">

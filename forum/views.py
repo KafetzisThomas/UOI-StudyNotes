@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.core.paginator import Paginator
+from django.contrib import messages
 from django.http import Http404
 from django.urls import reverse
 from .utils import send_reply_notification
@@ -89,6 +90,7 @@ def new_post(request):
         if form.is_valid():
             obj.user = request.user
             form.save()
+            messages.success(request, "Post created successfully.")
             return redirect("forum:display_posts")
     else:
         form = PostForm()
@@ -107,7 +109,8 @@ def edit_post(request, post_id):
         form = PostForm(instance=post, data=request.POST)
         if form.is_valid():
             form.save()
-            return redirect("forum:display_posts")
+            messages.success(request, "Post modified successfully.")
+            return redirect("forum:post", post_id=post_id)
     else:
         initial_data = {"title": post.title, "content": post.content}
         form = PostForm(instance=post, initial=initial_data)
@@ -122,4 +125,5 @@ def delete_post(request, post_id):
     if post.user != request.user:
         raise Http404
     post.delete()
+    messages.success(request, "Post deleted successfully.")
     return redirect("forum:display_posts")
