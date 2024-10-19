@@ -9,6 +9,14 @@
 {% endblock page_header %}
 
 {% block content %}
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-success text-center" role="alert">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
     <form method="POST" action="{% url 'users:account' %}">
         {% csrf_token %}
         {{ form|crispy }}

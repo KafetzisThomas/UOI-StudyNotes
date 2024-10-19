@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from .forms import CustomUserCreationForm, CustomAuthenticationForm, UpdateUserForm
 from django.contrib.auth.views import LoginView
 from django.contrib.auth.models import User
+from django.contrib import messages
 
 
 def register(request):
@@ -28,6 +29,7 @@ def account(request):
         if form.is_valid():
             form.save()
             update_session_auth_hash(request, request.user)  # Keep user logged in
+            messages.success(request, "Your account credentials successfully updated!")
             return redirect("users:account")
     else:
         form = UpdateUserForm(instance=request.user)
