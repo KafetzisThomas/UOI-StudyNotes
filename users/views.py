@@ -29,7 +29,9 @@ def account(request):
         if form.is_valid():
             form.save()
             update_session_auth_hash(request, request.user)  # Keep user logged in
-            messages.success(request, "Your account credentials successfully updated!")
+            messages.success(
+                request, "Your account credentials have been successfully updated."
+            )
             return redirect("users:account")
     else:
         form = UpdateUserForm(instance=request.user)
@@ -42,6 +44,9 @@ def account(request):
 def delete_account(request):
     user = User.objects.get(id=request.user.id)
     user.delete()
+    messages.error(
+        request, "Your account has been deleted along with all associated data."
+    )
     return redirect("users:register")
 
 
