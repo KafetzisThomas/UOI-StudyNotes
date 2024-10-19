@@ -47,12 +47,7 @@ body {
   color: #adb5bd;
 }
 
+/* Muted text color styles */
 .text-muted {
   color: #adb5bd !important;
-}
-
-/* Text-area placeholder styles */
-.custom-textarea::placeholder {
-  color: #adb5bd;
-  opacity: 1;
 }

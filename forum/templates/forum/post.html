@@ -15,7 +15,7 @@
     <div class="container mt-4 mb-4">
         <!-- post section -->
         <div class="card mb-4 post-section">
-            <div class="card-header d-flex justify-content-between align-items-center" style="background-color: #2c3035; border-color: #343a40;">
+            <div class="card-header d-flex justify-content-between align-items-center bg-dark border rounded-top mb-0">
                 <h2 class="mb-0 text-light">{{ post.title }}</h2>
                 <small class="text-muted">
                     <span class="badge bg-secondary">By: {{ post.user.username }}</span>
@@ -23,7 +23,7 @@
                     <span class="badge bg-secondary">Created: {{ post.timestamp|date:"d F, Y H:i" }}</span>
                 </small>
             </div>
-            <div class="card-body" style="background-color: #2c3035; color: #adb5bd;">
+            <div class="card-body bg-dark text-light border rounded-left rounded-right rounded-bottom">
                 <p class="card-text">{{ post.content|linebreaks }}</p>
                 <div class="d-flex float-end mt-4">
                     {% if user.is_authenticated %}
@@ -59,7 +59,7 @@
         <div>
             <div class="list-group">
                 {% for reply in replies %}
-                    <div class="list-group-item" style="background-color: #2c3035; color: #adb5bd; border-color: #343a40;">
+                    <div class="list-group-item bg-dark text-light border rounded mb-2">
                         <p class="mb-1">{{ reply.content|linebreaks }}</p>
                         {% if reply.user.is_staff %}
                             <small class="text-muted">By {{ reply.user.username }} <i class="bi bi-shield-shaded" data-toggle="tooltip" title="This user is a moderator"></i> on {{ reply.timestamp|date:"d F, Y H:i" }}</small>
@@ -87,7 +87,7 @@
         <!-- Delete post modal start -->
         <div class="modal fade" id="delete_post_modal" tabindex="-1" aria-labelledby="delete_post_modal_label" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content" style="background-color: #2c3035;">
+                <div class="modal-content bg-dark">
                     <div class="modal-header">
                         <h1 class="modal-title fs-5 text-light" id="delete_post_modal_label">Delete Post?</h1>
                         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
