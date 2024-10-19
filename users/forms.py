@@ -1,13 +1,32 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
-from django.contrib.auth.password_validation import validate_password
 
 
 class CustomUserCreationForm(UserCreationForm):
-    email = forms.EmailField(
-        label="Email Address", widget=forms.EmailInput, required=True
+    username = forms.CharField(
+        label="Username",
+        widget=forms.Textarea(
+            attrs={"class": "form-control bg-dark text-light", "rows": 1}
+        ),
+        required=True,
+    )
+    email = forms.CharField(
+        label="Email Address",
+        widget=forms.EmailInput(attrs={"class": "form-control bg-dark text-light"}),
+        required=True,
+    )
+    password1 = forms.CharField(
+        label="Password",
+        widget=forms.PasswordInput(attrs={"class": "form-control bg-dark text-light"}),
+        required=True,
+    )
+    password2 = forms.CharField(
+        label="Confirm Password",
+        widget=forms.PasswordInput(attrs={"class": "form-control bg-dark text-light"}),
+        required=True,
     )
 
     class Meta:
@@ -15,15 +34,43 @@ class CustomUserCreationForm(UserCreationForm):
         fields = ("username", "email", "password1", "password2")
 
 
+class CustomAuthenticationForm(AuthenticationForm):
+    username = forms.CharField(
+        label="Username",
+        widget=forms.Textarea(
+            attrs={"class": "form-control bg-dark text-light", "rows": 1}
+        ),
+        required=True,
+    )
+    password = forms.CharField(
+        label="Password",
+        widget=forms.PasswordInput(attrs={"class": "form-control bg-dark text-light"}),
+        required=True,
+    )
+
+
 class UpdateUserForm(forms.ModelForm):
-    email = forms.EmailField(
-        label="Email Address", widget=forms.EmailInput, required=True
+    username = forms.CharField(
+        label="Username",
+        widget=forms.Textarea(
+            attrs={"class": "form-control bg-dark text-light", "rows": 1}
+        ),
+        required=True,
+    )
+    email = forms.CharField(
+        label="Email Address",
+        widget=forms.EmailInput(attrs={"class": "form-control bg-dark text-light"}),
+        required=True,
     )
     password1 = forms.CharField(
-        label="New Password", widget=forms.PasswordInput, required=False
+        label="New Password",
+        widget=forms.PasswordInput(attrs={"class": "form-control bg-dark text-light"}),
+        required=False,
     )
     password2 = forms.CharField(
-        label="Confirm New Password", widget=forms.PasswordInput, required=False
+        label="Confirm New Password",
+        widget=forms.PasswordInput(attrs={"class": "form-control bg-dark text-light"}),
+        required=False,
     )
 
     class Meta:
