@@ -9,6 +9,14 @@
 {% endblock page_header %}
 
 {% block content %}
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-success text-center" role="alert">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
     <form method="POST" action="{% url 'users:account' %}">
         {% csrf_token %}
         {{ form|crispy }}
@@ -20,12 +28,12 @@
     <!-- Delete account modal start -->
     <div class="modal fade" id="delete_account_modal" tabindex="-1" aria-labelledby="delete_account_modal_label" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
+            <div class="modal-content bg-dark">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="delete_account_modal_label">DELETE ACCOUNT</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <h1 class="modal-title fs-5 text-light" id="delete_account_modal_label">DELETE ACCOUNT</h1>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body text-light">
                     Procceed below to delete your account and all associated data. Deleting your account is permanent. It cannot be undone.
                 </div>
                 <div class="modal-footer">

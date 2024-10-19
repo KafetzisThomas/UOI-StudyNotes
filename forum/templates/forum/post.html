@@ -14,32 +14,32 @@
 
     <div class="container mt-4 mb-4">
         <!-- post section -->
-        <div class="card mb-4">
-            <div class="card-header d-flex justify-content-between align-items-center">
-                <h2 class="mb-0">{{ post.title }}</h2>
+        <div class="card bg-dark mb-4">
+            <div class="card-header d-flex justify-content-between align-items-center bg-dark border rounded-top mb-0">
+                <h2 class="mb-0 text-light">{{ post.title }}</h2>
                 <small class="text-muted">
                     <span class="badge bg-secondary">By: {{ post.user.username }}</span>
                     <span class="badge bg-secondary">Topic: {{ post.topic }}</span>
                     <span class="badge bg-secondary">Created: {{ post.timestamp|date:"d F, Y H:i" }}</span>
                 </small>
             </div>
-            <div class="card-body">
+            <div class="card-body bg-dark text-light border rounded-left rounded-right rounded-bottom">
                 <p class="card-text">{{ post.content|linebreaks }}</p>
                 <div class="d-flex float-end mt-4">
                     {% if user.is_authenticated %}
                         {% if request.user == post.user %}
                             <!-- delete button trigger modal -->
-                            <button class="btn btn-primary me-1" type="button" data-toggle="tooltip" title="Delete Post" data-bs-toggle="modal" data-bs-target="#delete_post_modal">
+                            <button class="btn btn-outline-light me-1" type="button" data-toggle="tooltip" title="Delete Post" data-bs-toggle="modal" data-bs-target="#delete_post_modal">
                                 <i class="bi bi-trash"></i>
                             </button>
-                            <a href="{% url 'forum:edit_post' post.id %}" class="btn btn-primary me-1" data-toggle="tooltip" title="Edit Post">
+                            <a href="{% url 'forum:edit_post' post.id %}" class="btn btn-outline-light me-1" data-toggle="tooltip" title="Edit Post">
                                 <i class="bi bi-pencil-square"></i>
                             </a>
                         {% endif %}
                         <!-- display like button & like count -->
                         <form action="{% url 'forum:like_post' post.id %}" method="POST">
                             {% csrf_token %}
-                            <button class="btn btn-danger me-1" type="submit" data-toggle="tooltip" title="{{ number_of_likes }} likes">
+                            <button class="btn btn-outline-light me-1" type="submit" data-toggle="tooltip" title="{{ number_of_likes }} likes">
                                 {% if post_is_liked %}
                                     <i class="bi bi-heart-fill"></i>
                                 {% else %}
@@ -47,7 +47,7 @@
                                 {% endif %}
                             </button>
                         </form>
-                        <button class="btn btn-primary reply-btn" type="button" data-toggle="tooltip" title="Reply" data-bs-toggle="collapse" data-bs-target="#replyForm-{{ post.id }}" aria-expanded="false" aria-controls="replyForm-{{ post.id }}">
+                        <button class="btn btn-outline-light reply-btn" type="button" data-toggle="tooltip" title="Reply" data-bs-toggle="collapse" data-bs-target="#replyForm-{{ post.id }}" aria-expanded="false" aria-controls="replyForm-{{ post.id }}">
                             <i class="bi bi-reply-fill"></i>
                         </button>
                     {% endif %}
@@ -59,7 +59,7 @@
         <div>
             <div class="list-group">
                 {% for reply in replies %}
-                    <div class="list-group-item">
+                    <div class="list-group-item bg-dark text-light border rounded mb-2">
                         <p class="mb-1">{{ reply.content|linebreaks }}</p>
                         {% if reply.user.is_staff %}
                             <small class="text-muted">By {{ reply.user.username }} <i class="bi bi-shield-shaded" data-toggle="tooltip" title="This user is a moderator"></i> on {{ reply.timestamp|date:"d F, Y H:i" }}</small>
@@ -87,12 +87,12 @@
         <!-- Delete post modal start -->
         <div class="modal fade" id="delete_post_modal" tabindex="-1" aria-labelledby="delete_post_modal_label" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
+                <div class="modal-content bg-dark">
                     <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="delete_post_modal_label">Delete Post?</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <h1 class="modal-title fs-5 text-light" id="delete_post_modal_label">Delete Post?</h1>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="modal-body">
+                    <div class="modal-body text-light">
                         Are you sure you want to delete this post?
                     </div>
                     <div class="modal-footer">
