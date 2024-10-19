@@ -12,3 +12,13 @@ class ReplyForm(forms.ModelForm):
     class Meta:
         model = Reply
         fields = ["content"]
+        widgets = {
+            "content": forms.Textarea(
+                attrs={
+                    "class": "custom-textarea",
+                    "style": "background-color: #2c3035; color: #adb5bd;",
+                    "rows": 10,
+                    "placeholder": "Write your reply here...",
+                }
+            ),
+        }
