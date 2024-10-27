@@ -101,7 +101,7 @@ def new_post(request):
 
 @login_required
 def edit_post(request, post_id):
-    post = Post.objects.get(id=post_id)
+    post = get_object_or_404(Post, id=post_id)
     if post.user != request.user:
         raise Http404
 

@@ -1,6 +1,6 @@
 """
 This module contains test cases for the following views:
-* display_posts, post, new_post
+* display_posts, post, new_post, edit_post
 """
 
 from django.test import TestCase, Client
@@ -109,7 +109,7 @@ class PostViewTests(TestCase):
         """
         self.client = Client()
         self.user = User.objects.create_user(
-            username="testuser", password="password123"
+            username="testuser", email="testuser@example.com", password="password123"
         )
         self.post = Post.objects.create(
             title="Test Post",
@@ -182,7 +182,7 @@ class NewPostViewTests(TestCase):
         """
         self.client = Client()
         self.user = User.objects.create_user(
-            username="testuser", password="password123"
+            username="testuser", email="testuser@example.com", password="password123"
         )
         self.client.login(username="testuser", password="password123")
         self.url = reverse("forum:new_post")
@@ -237,3 +237,69 @@ class NewPostViewTests(TestCase):
         }
         self.client.post(self.url, post_data)
         self.assertEqual(Post.objects.count(), 0)
+
+
+class EditPostViewTests(TestCase):
+    """
+    Test suite for the edit_post view.
+    """
+
+    def setUp(self):
+        """
+        Set up the test environment by creating users & a post.
+        """
+        self.user = User.objects.create_user(
+            username="testuser", email="testuser@example.com", password="password123"
+        )
+        self.user2 = User.objects.create_user(
+            username="testuser2", email="testuser2@example.com", password="password456"
+        )
+        self.post = Post.objects.create(
+            title="Original Title",
+            topic="Software",
+            content="Original content.",
+            user=self.user,
+        )
+        self.url = reverse("forum:edit_post", args=[self.post.id])
+        self.client.login(username="testuser", password="password123")
+
+    def test_edit_post_success(self):
+        """
+        Test that the post is successfully edited with valid data.
+        """
+        updated_data = {
+            "title": "Updated Title",
+            "topic": "Software",
+            "content": "Updated content.",
+        }
+        response = self.client.post(self.url, updated_data)
+        self.post.refresh_from_db()
+
+        self.assertEqual(self.post.title, updated_data["title"])
+        self.assertEqual(self.post.content, updated_data["content"])
+        self.assertRedirects(response, reverse("forum:post", args=[self.post.id]))
+
+    def test_edit_post_permission_denied(self):
+        """
+        Test that a user who is not the owner of the post receives a 404 error.
+        """
+        self.client.logout()
+        self.client.login(username="testuser2", password="password456")
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 404)
+
+    def test_edit_post_invalid_data(self):
+        """
+        Test that invalid form data does not save the form.
+        """
+        invalid_data = {
+            "title": "",  # Invalid: title is required
+            "topic": "Software",
+            "content": "Updated content.",
+        }
+        self.client.post(self.url, invalid_data)
+
+        # Ensure post data remains unchanged
+        self.post.refresh_from_db()
+        self.assertEqual(self.post.title, "Original Title")
+        self.assertEqual(self.post.content, "Original content.")
