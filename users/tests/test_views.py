@@ -94,3 +94,37 @@ class AccountViewTests(TestCase):
         self.user.refresh_from_db()
         self.assertNotEqual(self.user.username, "")
         self.assertNotEqual(self.user.email, "invalid_email")
+
+
+class DeleteAccountViewTests(TestCase):
+    """
+    Test case for the delete_account view.
+    """
+
+    def setUp(self):
+        """
+        Set up the test environment by creating a user.
+        """
+        self.user = User.objects.create_user(
+            username="testuser",
+            email="testuser@example.com",
+            password="SecRet_p@ssword",
+        )
+        self.url = reverse("users:delete_account")
+        self.client.login(username="testuser", password="SecRet_p@ssword")
+
+    def test_successful_account_deletion(self):
+        """
+        Test that a user account is deleted successfully.
+        """
+        response = self.client.post(self.url)
+        self.assertEqual(User.objects.count(), 0)
+        self.assertRedirects(response, reverse("users:register"))
+
+    def test_account_not_found_after_deletion(self):
+        """
+        Test that the account cannot be accessed after deletion.
+        """
+        self.client.post(self.url)  # Delete the account
+        with self.assertRaises(User.DoesNotExist):
+            User.objects.get(id=self.user.id)  # Attempt to access the deleted user
