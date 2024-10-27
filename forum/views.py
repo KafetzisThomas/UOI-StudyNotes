@@ -86,8 +86,8 @@ def like_post(request, post_id):
 def new_post(request):
     if request.method == "POST":
         form = PostForm(data=request.POST)
-        obj = form.save(commit=False)
         if form.is_valid():
+            obj = form.save(commit=False)
             obj.user = request.user
             form.save()
             messages.success(request, "Post created successfully.")

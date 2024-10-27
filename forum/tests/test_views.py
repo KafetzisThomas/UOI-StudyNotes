@@ -1,6 +1,6 @@
 """
 This module contains test cases for the following views:
-* display_posts, post
+* display_posts, post, new_post
 """
 
 from django.test import TestCase, Client
@@ -169,3 +169,71 @@ class PostViewTests(TestCase):
         """
         self.client.post(self.url, {"content": "This is a test reply"})
         self.assertEqual(self.post.replies.count(), 1)
+
+
+class NewPostViewTests(TestCase):
+    """
+    Test suite for the new_post view.
+    """
+
+    def setUp(self):
+        """
+        Set up the test environment by creating a user.
+        """
+        self.client = Client()
+        self.user = User.objects.create_user(
+            username="testuser", password="password123"
+        )
+        self.client.login(username="testuser", password="password123")
+        self.url = reverse("forum:new_post")
+
+    def test_new_post_view_status_code(self):
+        """
+        Test that the new_post view returns a 200 status code
+        for authenticated users.
+        """
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+
+    def test_new_post_view_redirect_if_not_logged_in(self):
+        """
+        Test that the view redirects to the login page
+        if the user is not authenticated.
+        """
+        self.client.logout()
+        response = self.client.get(self.url)
+        self.assertNotEqual(response.status_code, 200)
+        self.assertRedirects(response, f"{reverse('users:login')}?next={self.url}")
+
+    def test_new_post_view_template(self):
+        """
+        Test that the view uses the correct template.
+        """
+        response = self.client.get(self.url)
+        self.assertTemplateUsed(response, "forum/new_post.html")
+
+    def test_post_creation_success(self):
+        """
+        Test that a post is created successfully when valid data is submitted.
+        """
+        post_data = {
+            "title": "Test Post",
+            "topic": "Software",
+            "content": "This is a test post content.",
+        }
+        response = self.client.post(self.url, post_data)
+        self.assertEqual(Post.objects.count(), 1)
+        self.assertEqual(Post.objects.first().user, self.user)  # authenticated user
+        self.assertRedirects(response, reverse("forum:display_posts"))
+
+    def test_invalid_post_data(self):
+        """
+        Test that invalid form data does not create a post.
+        """
+        post_data = {
+            "title": "",  # Invalid: title is required
+            "topic": "Hardware",
+            "content": "Content without a title.",
+        }
+        self.client.post(self.url, post_data)
+        self.assertEqual(Post.objects.count(), 0)
