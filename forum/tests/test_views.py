@@ -1,6 +1,6 @@
 """
 This module contains test cases for the following views:
-* display_posts
+* display_posts, post
 """
 
 from django.test import TestCase, Client
@@ -96,3 +96,76 @@ class DisplayPostsViewTests(TestCase):
         # Check 2nd page, should have 2 posts
         response = self.client.get(reverse("forum:display_posts"), {"page": 2})
         self.assertEqual(len(response.context["page_obj"]), 2)
+
+
+class PostViewTests(TestCase):
+    """
+    Test suite for the post view.
+    """
+
+    def setUp(self):
+        """
+        Set up the test environment by creating a user & a post.
+        """
+        self.client = Client()
+        self.user = User.objects.create_user(
+            username="testuser", password="password123"
+        )
+        self.post = Post.objects.create(
+            title="Test Post",
+            topic="Software",
+            content="Test content",
+            user=self.user,
+        )
+        self.url = reverse("forum:post", args=[self.post.id])
+        self.client.login(username="testuser", password="password123")
+
+    def test_post_view_status_code(self):
+        """
+        Test that the view returns a 200 status code for an existing post.
+        """
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+
+    def test_post_view_template(self):
+        """
+        Test that the view uses the correct template.
+        """
+        response = self.client.get(self.url)
+        self.assertTemplateUsed(response, "forum/post.html")
+
+    def test_post_view_context_data(self):
+        """
+        Test that the view passes the correct context data to the template.
+        """
+        response = self.client.get(self.url)
+        self.assertIn("post", response.context)
+        self.assertIn("form", response.context)
+        self.assertIn("replies", response.context)
+        self.assertIn("number_of_likes", response.context)
+        self.assertIn("post_is_liked", response.context)
+
+    def test_like_status_in_context(self):
+        """
+        Test that the 'post_is_liked' context variable is True,
+        if the user has liked the post.
+        """
+        self.post.likes.add(self.user)
+        response = self.client.get(self.url)
+        self.assertTrue(response.context["post_is_liked"])
+
+    def test_number_of_likes_in_context(self):
+        """
+        Test that the 'number_of_likes' context variable
+        reflects the correct number of likes.
+        """
+        self.post.likes.add(self.user)
+        response = self.client.get(self.url)
+        self.assertEqual(response.context["number_of_likes"], 1)
+
+    def test_reply_submission(self):
+        """
+        Test that submitting a valid reply form adds a new reply to the post.
+        """
+        self.client.post(self.url, {"content": "This is a test reply"})
+        self.assertEqual(self.post.replies.count(), 1)
