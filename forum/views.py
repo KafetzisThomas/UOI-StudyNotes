@@ -121,7 +121,7 @@ def edit_post(request, post_id):
 
 @login_required
 def delete_post(request, post_id):
-    post = Post.objects.get(id=post_id)
+    post = get_object_or_404(Post, id=post_id)
     if post.user != request.user:
         raise Http404
     post.delete()

@@ -1,6 +1,6 @@
 """
 This module contains test cases for the following views:
-* display_posts, post, new_post, edit_post
+* display_posts, post, new_post, edit_post, delete_post
 """
 
 from django.test import TestCase, Client
@@ -303,3 +303,47 @@ class EditPostViewTests(TestCase):
         self.post.refresh_from_db()
         self.assertEqual(self.post.title, "Original Title")
         self.assertEqual(self.post.content, "Original content.")
+
+
+class DeletePostViewTests(TestCase):
+    """
+    Test suite for the delete_post view.
+    """
+
+    def setUp(self):
+        """
+        Set up the test environment by creating users & a post.
+        """
+        self.user = User.objects.create_user(
+            username="testuser", email="testuser@example.com", password="password123"
+        )
+        self.user2 = User.objects.create_user(
+            username="testuser2", email="testuser2@example.com", password="password456"
+        )
+        self.post = Post.objects.create(
+            title="Test Post",
+            topic="Software",
+            content="Test post content.",
+            user=self.user,
+        )
+        self.url = reverse("forum:delete_post", args=[self.post.id])
+        self.client.login(username="testuser", password="password123")
+
+    def test_delete_post_successful(self):
+        """
+        Test that a post is deleted successfully when the owner requests deletion.
+        """
+        response = self.client.post(self.url)
+
+        # Check the post no longer exists
+        self.assertFalse(Post.objects.filter(id=self.post.id).exists())
+        self.assertRedirects(response, reverse("forum:display_posts"))
+
+    def test_delete_post_non_owner(self):
+        """
+        Test that a non-owner attempting to delete a post receives a 404 error.
+        """
+        self.client.logout()
+        self.client.login(username="testuser2", password="password456")
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 404)
