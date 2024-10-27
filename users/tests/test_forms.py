@@ -1,10 +1,12 @@
 """
 This module contains test cases for the following classes:
 * CustomUserCreationForm (validation & required fields)
+* CustomAuthenticationForm (validation & required fields)
 """
 
 from django.test import TestCase
-from ..forms import CustomUserCreationForm
+from django.contrib.auth.models import User
+from ..forms import CustomUserCreationForm, CustomAuthenticationForm
 
 
 class CustomUserCreationFormTests(TestCase):
@@ -65,4 +67,45 @@ class CustomUserCreationFormTests(TestCase):
         data = self.valid_data.copy()
         data["password2"] = "Secretpassword"
         form = CustomUserCreationForm(data=data)
+        self.assertFalse(form.is_valid(), form.errors)
+
+
+class CustomAuthenticationFormTests(TestCase):
+    """
+    Test suite for the CustomAuthenticationForm.
+    """
+
+    def setUp(self):
+        """
+        Set up the test environment by creating a user.
+        """
+        self.user = User.objects.create_user(
+            username="testuser",
+            email="testuser@example.com",
+            password="SecRet_p@ssword",
+        )
+
+    def test_form_valid_data(self):
+        """
+        Test that the form is valid with correct username and password.
+        """
+        data = {
+            "username": "testuser",
+            "password": "SecRet_p@ssword",
+        }
+        form = CustomAuthenticationForm(data=data)
+        self.assertTrue(form.is_valid(), form.errors)
+
+    def test_form_missing_required_fields(self):
+        """
+        Test that the form is invalid if required fields are missing.
+        """
+        # Test missing username
+        data = {"password": "SecRet_p@ssword"}
+        form = CustomAuthenticationForm(data=data)
+        self.assertFalse(form.is_valid(), form.errors)
+
+        # Test missing password
+        data = {"username": "testuser"}
+        form = CustomAuthenticationForm(data=data)
         self.assertFalse(form.is_valid(), form.errors)
