@@ -86,8 +86,8 @@ def like_post(request, post_id):
 def new_post(request):
     if request.method == "POST":
         form = PostForm(data=request.POST)
-        obj = form.save(commit=False)
         if form.is_valid():
+            obj = form.save(commit=False)
             obj.user = request.user
             form.save()
             messages.success(request, "Post created successfully.")
@@ -101,7 +101,7 @@ def new_post(request):
 
 @login_required
 def edit_post(request, post_id):
-    post = Post.objects.get(id=post_id)
+    post = get_object_or_404(Post, id=post_id)
     if post.user != request.user:
         raise Http404
 
@@ -121,7 +121,7 @@ def edit_post(request, post_id):
 
 @login_required
 def delete_post(request, post_id):
-    post = Post.objects.get(id=post_id)
+    post = get_object_or_404(Post, id=post_id)
     if post.user != request.user:
         raise Http404
     post.delete()
