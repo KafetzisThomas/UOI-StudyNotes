@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.core.paginator import Paginator
 from django.contrib import messages
+from django.conf import settings
 from django.http import Http404
 from django.urls import reverse
 from .utils import send_reply_notification
@@ -51,7 +52,7 @@ def post(request, post_id):
             new_reply.post = post
             new_reply.save()
             post_url = reverse("forum:post", args=[post.id])
-            if new_reply.user != post.user:
+            if not settings.DEBUG and new_reply.user != post.user:
                 send_reply_notification(
                     sender=new_reply.user,
                     receiver=post.user,
