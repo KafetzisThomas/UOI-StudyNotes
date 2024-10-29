@@ -25,8 +25,8 @@ body {
   color: #fff;
 }
 
-/* Post styles */
-.post-section {
+/* Note styles */
+.note-section {
   background: #2c3035;
   padding: 10px 20px;
   border: 1px solid #343a40;
@@ -34,16 +34,16 @@ body {
   margin-bottom: 20px;
 }
 
-/* Post name styles */
-.post-name {
+/* Note name styles */
+.note-name {
   color: #fff;
   font-size: 25px;
   text-decoration: none;
   transition: color 0.3s ease;
 }
 
-/* Hover state styles for posts name */
-.post-name:hover {
+/* Hover state styles for notes name */
+.note-name:hover {
   color: #adb5bd;
 }
 

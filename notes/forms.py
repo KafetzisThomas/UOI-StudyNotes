@@ -1,8 +1,8 @@
 from django import forms
-from .models import Post, Reply, TOPICS
+from .models import Note, Comment, DEPARTMENTS
 
 
-class PostForm(forms.ModelForm):
+class NoteForm(forms.ModelForm):
     title = forms.CharField(
         label="Title",
         widget=forms.Textarea(
@@ -10,9 +10,9 @@ class PostForm(forms.ModelForm):
         ),
         required=True,
     )
-    topic = forms.ChoiceField(
-        label="Topic",
-        choices=TOPICS,
+    department = forms.ChoiceField(
+        label="Department",
+        choices=DEPARTMENTS,
         widget=forms.Select(attrs={"class": "form-control bg-dark text-light"}),
         required=True,
     )
@@ -25,13 +25,13 @@ class PostForm(forms.ModelForm):
     )
 
     class Meta:
-        model = Post
-        fields = ["title", "topic", "content"]
+        model = Note
+        fields = ["title", "department", "content"]
 
 
-class ReplyForm(forms.ModelForm):
+class CommentForm(forms.ModelForm):
     content = forms.CharField(
-        label="Write your reply here ",
+        label="Write your comment here ",
         widget=forms.Textarea(
             attrs={"class": "form-control bg-dark text-light", "rows": 10}
         ),
@@ -39,5 +39,5 @@ class ReplyForm(forms.ModelForm):
     )
 
     class Meta:
-        model = Reply
+        model = Comment
         fields = ["content"]

@@ -36,7 +36,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     # My apps
-    "forum",
+    "notes",
     "users",
     # Third-Party apps
     "django_bootstrap5",
