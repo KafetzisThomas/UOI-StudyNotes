@@ -1,7 +1,7 @@
-{% extends "forum/base.html" %}
+{% extends "notes/base.html" %}
 {% load crispy_forms_tags %}
 
-{% block title %}{{ post.title }}{% endblock title %}
+{% block title %}{{ note.title }}{% endblock title %}
 
 {% block content %}
     {% if messages %}
@@ -13,41 +13,41 @@
     {% endif %}
 
     <div class="container mt-4 mb-4">
-        <!-- post section -->
+        <!-- note section -->
         <div class="card bg-dark mb-4">
             <div class="card-header d-flex justify-content-between align-items-center bg-dark border rounded-top mb-0">
-                <h2 class="mb-0 text-light">{{ post.title }}</h2>
+                <h2 class="mb-0 text-light">{{ note.title }}</h2>
                 <small class="text-muted">
-                    <span class="badge bg-secondary">By: {{ post.user.username }}</span>
-                    <span class="badge bg-secondary">Topic: {{ post.topic }}</span>
-                    <span class="badge bg-secondary">Created: {{ post.timestamp|date:"d F, Y H:i" }}</span>
+                    <span class="badge bg-secondary">By: {{ note.user.username }}</span>
+                    <span class="badge bg-secondary">Department: {{ note.department }}</span>
+                    <span class="badge bg-secondary">Created: {{ note.timestamp|date:"d F, Y H:i" }}</span>
                 </small>
             </div>
             <div class="card-body bg-dark text-light border rounded-left rounded-right rounded-bottom">
-                <p class="card-text">{{ post.content|linebreaks }}</p>
+                <p class="card-text">{{ note.content|linebreaks }}</p>
                 <div class="d-flex float-end mt-4">
                     {% if user.is_authenticated %}
-                        {% if request.user == post.user %}
+                        {% if request.user == note.user %}
                             <!-- delete button trigger modal -->
-                            <button class="btn btn-outline-light me-1" type="button" data-toggle="tooltip" title="Delete Post" data-bs-toggle="modal" data-bs-target="#delete_post_modal">
+                            <button class="btn btn-outline-light me-1" type="button" data-toggle="tooltip" title="Delete Note" data-bs-toggle="modal" data-bs-target="#delete_note_modal">
                                 <i class="bi bi-trash"></i>
                             </button>
-                            <a href="{% url 'forum:edit_post' post.id %}" class="btn btn-outline-light me-1" data-toggle="tooltip" title="Edit Post">
+                            <a href="{% url 'notes:edit_note' note.id %}" class="btn btn-outline-light me-1" data-toggle="tooltip" title="Edit Note">
                                 <i class="bi bi-pencil-square"></i>
                             </a>
                         {% endif %}
                         <!-- display like button & like count -->
-                        <form action="{% url 'forum:like_post' post.id %}" method="POST">
+                        <form action="{% url 'notes:like_note' note.id %}" method="POST">
                             {% csrf_token %}
                             <button class="btn btn-outline-light me-1" type="submit" data-toggle="tooltip" title="{{ number_of_likes }} likes">
-                                {% if post_is_liked %}
+                                {% if note_is_liked %}
                                     <i class="bi bi-heart-fill"></i>
                                 {% else %}
                                     <i class="bi bi-heart"></i>
                                 {% endif %}
                             </button>
                         </form>
-                        <button class="btn btn-outline-light reply-btn" type="button" data-toggle="tooltip" title="Reply" data-bs-toggle="collapse" data-bs-target="#replyForm-{{ post.id }}" aria-expanded="false" aria-controls="replyForm-{{ post.id }}">
+                        <button class="btn btn-outline-light comment-btn" type="button" data-toggle="tooltip" title="Comment" data-bs-toggle="collapse" data-bs-target="#CommentForm-{{ note.id }}" aria-expanded="false" aria-controls="CommentForm-{{ note.id }}">
                             <i class="bi bi-reply-fill"></i>
                         </button>
                     {% endif %}
@@ -55,48 +55,48 @@
             </div>
         </div>
 
-        <!-- replies section -->
+        <!-- comments section -->
         <div>
             <div class="list-group">
-                {% for reply in replies %}
+                {% for comment in comments %}
                     <div class="list-group-item bg-dark text-light border rounded mb-2">
-                        <p class="mb-1">{{ reply.content|linebreaks }}</p>
-                        {% if reply.user.is_staff %}
-                            <small class="text-muted">By {{ reply.user.username }} <i class="bi bi-shield-shaded" data-toggle="tooltip" title="This user is a moderator"></i> on {{ reply.timestamp|date:"d F, Y H:i" }}</small>
+                        <p class="mb-1">{{ comment.content|linebreaks }}</p>
+                        {% if comment.user.is_staff %}
+                            <small class="text-muted">By {{ comment.user.username }} <i class="bi bi-shield-shaded" data-toggle="tooltip" title="This user is a moderator"></i> on {{ comment.timestamp|date:"d F, Y H:i" }}</small>
                         {% else %}
-                            <small class="text-muted">By {{ reply.user.username }} on {{ reply.timestamp|date:"d F, Y H:i" }}</small>
+                            <small class="text-muted">By {{ comment.user.username }} on {{ comment.timestamp|date:"d F, Y H:i" }}</small>
                         {% endif %}
                     </div>
                 {% empty %}
-                    <p class="text-muted">No replies yet.</p>
+                    <p class="text-muted">No comments yet.</p>
                 {% endfor %}
             </div>
         </div>
 
         <hr>
 
-        <!-- reply section -->
+        <!-- comment section -->
         <div>
-            <form class="collapse mt-4" id="replyForm-{{ post.id }}" method="POST">
+            <form class="collapse mt-4" id="CommentForm-{{ note.id }}" method="POST">
                 {% csrf_token %}
                 {{ form|crispy }}
                 <button type="submit" class="btn btn-success mt-2">Submit</button>
             </form>
         </div>
 
-        <!-- Delete post modal start -->
-        <div class="modal fade" id="delete_post_modal" tabindex="-1" aria-labelledby="delete_post_modal_label" aria-hidden="true">
+        <!-- Delete note modal start -->
+        <div class="modal fade" id="delete_note_modal" tabindex="-1" aria-labelledby="delete_note_modal_label" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content bg-dark">
                     <div class="modal-header">
-                        <h1 class="modal-title fs-5 text-light" id="delete_post_modal_label">Delete Post?</h1>
+                        <h1 class="modal-title fs-5 text-light" id="delete_note_modal_label">Delete Note?</h1>
                         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body text-light">
-                        Are you sure you want to delete this post?
+                        Are you sure you want to delete this note?
                     </div>
                     <div class="modal-footer">
-                        <form method="post" action="{% url 'forum:delete_post' post.id %}">
+                        <form method="POST" action="{% url 'notes:delete_note' note.id %}">
                             {% csrf_token %}
                             <button type="submit" class="btn btn-danger" name="action" value="delete">Yes</button>
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
@@ -105,16 +105,16 @@
                 </div>
             </div>
         </div>
-        <!-- Delete post modal end -->
+        <!-- Delete note modal end -->
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            const replyBtn = document.querySelector('.reply-btn');
-            replyBtn.addEventListener('click', function () {
+            const commentBtn = document.querySelector('.comment-btn');
+            commentBtn.addEventListener('click', function () {
                 const targetForm = document.querySelector(this.getAttribute('data-bs-target'));
                 targetForm.addEventListener('shown.bs.collapse', function () {
-                    // Scroll to the form after pressing the reply button
+                    // Scroll to the form after pressing the comment button
                     targetForm.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
                     // Focus the content field (textarea)

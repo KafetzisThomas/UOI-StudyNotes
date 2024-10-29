@@ -1,2 +1,2 @@
-# DIT-UOI-Forum
+# UOI-StudyNotes
  

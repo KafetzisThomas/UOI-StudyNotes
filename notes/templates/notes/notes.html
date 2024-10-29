@@ -1,9 +1,9 @@
-{% extends "forum/base.html" %}
+{% extends "notes/base.html" %}
 
-{% block title %}DIT-UOI Forum{% endblock title %}
+{% block title %}UOI-StudyNotes{% endblock title %}
 
 {% block page_header %}
-    <h3 class="text-center">Posts</h3>
+    <h3 class="text-center">Notes Archive</h3>
     <div class="row">
         <div class="col">
             <hr class="mb-2 mt-0">
@@ -20,20 +20,20 @@
         {% endfor %}
     {% endif %}
 
-    {% for post in page_obj %}
-        <article class="media post-section mb-4">
+    {% for note in page_obj %}
+        <article class="media note-section mb-4">
             <div class="media-body">
-                <h2><a class="post-name" href="{% url 'forum:post' post.id %}">{{ post.title }}</a></h2>
+                <h2><a class="note-name" href="{% url 'notes:note' note.id %}">{{ note.title }}</a></h2>
                 <p class="card-text">
                     <small class="text-muted">
-                        By: {{ post.user.username }} | Topic: {{ post.topic }} | Replies: {{ post.replies.all|length }} | Likes: {{ post.number_of_likes }} | {{ post.timestamp|date:"d F, Y H:i" }}
+                        By: {{ note.user.username }} | Department: {{ note.department }} | Comments: {{ note.comments.all|length }} | Likes: {{ note.number_of_likes }} | {{ note.timestamp|date:"d F, Y H:i" }}
                     </small>
                 </p>
             </div>
         </article>
     {% empty %}
         <div class="container text-center mt-3">
-            <h5>There are no posts.</h5>
+            <h5>There are no notes.</h5>
         </div>
     {% endfor %}
     <div class="pagination justify-content-center me-4 mt-4">

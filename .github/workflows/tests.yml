@@ -30,9 +30,9 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Run tests for forum app
+      - name: Run tests for notes app
         run: |
-          python3 manage.py test forum.tests
+          python3 manage.py test notes.tests
 
       - name: Run tests for users app
         run: |

@@ -1,14 +1,14 @@
-{% extends "forum/base.html" %}
+{% extends "notes/base.html" %}
 {% load crispy_forms_tags %}
 
-{% block title %}DIT-UOI Forum - Edit Post{% endblock title %}
+{% block title %}UOI-StudyNotes - Edit Note{% endblock title %}
 
 {% block page_header %}
-    <h2>Edit Post:</h2>
+    <h2>Edit Note:</h2>
 {% endblock page_header %}
 
 {% block content %}
-    <form action="{% url 'forum:edit_post' post.id %}" method='POST' class="form">
+    <form action="{% url 'notes:edit_note' note.id %}" method='POST' class="form">
         {% csrf_token %}
         {{ form|crispy }}
         <button type="submit" class="btn btn-secondary w-100">Save Changes</button>

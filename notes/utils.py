@@ -3,18 +3,18 @@ from django.core.mail import send_mail
 from django.template.loader import render_to_string
 
 
-def send_reply_notification(sender, receiver, post_url, reply):
-    subject = f'{sender}: Replied to your post - "{reply.post}"'
+def send_comment_notification(sender, receiver, note_url, comment):
+    subject = f'{sender}: Left a comment to your note - "{comment.note}"'
     email_from = settings.EMAIL_HOST_USER
     recipient_list = [receiver.email]
 
     html_message = render_to_string(
-        "email_templates/new_reply.html",
+        "email_templates/new_comment.html",
         {
             "sender": sender,
-            "title": reply.post,
-            "post_url": post_url,
-            "reply": reply,
+            "title": comment.note,
+            "note_url": note_url,
+            "comment": comment,
         },
     )
 
