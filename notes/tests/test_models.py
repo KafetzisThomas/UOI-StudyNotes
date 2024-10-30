@@ -24,6 +24,7 @@ class NoteModelTests(TestCase):
         self.note_data = {
             "title": "Test Note",
             "department": "Philosophy",
+            "subject": "Modern Philosophy",
             "content": "This is test content.",
             "user": self.user,
         }
@@ -35,6 +36,7 @@ class NoteModelTests(TestCase):
         note = Note.objects.create(**self.note_data)
         self.assertEqual(note.title, self.note_data["title"])
         self.assertEqual(note.department, self.note_data["department"])
+        self.assertEqual(note.subject, self.note_data["subject"])
         self.assertEqual(note.content, self.note_data["content"])
         self.assertEqual(note.user, self.note_data["user"])
         self.assertIsNotNone(note.timestamp)
@@ -71,6 +73,7 @@ class CommentModelTests(TestCase):
         self.note = Note.objects.create(
             title="Test Note",
             department="Philosophy",
+            subject="Modern Philosophy",
             content="This is test content.",
             user=self.user,
         )

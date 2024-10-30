@@ -17,7 +17,7 @@ class DisplayNotesViewTests(TestCase):
     def setUp(self):
         """
         Set up the test environment by creating a user and sample notes,
-        with different departments and titles.
+        with different departments, subjects and titles.
         """
         self.client = Client()
         self.user = User.objects.create_user(
@@ -27,18 +27,21 @@ class DisplayNotesViewTests(TestCase):
             Note.objects.create(
                 title="Note 1",
                 department="Philosophy",
+                subject="Modern Philosophy",
                 content="Test content 1",
                 user=self.user,
             ),
             Note.objects.create(
                 title="Note 2",
                 department="Informatics and Telecommunications",
+                subject="Programming",
                 content="Test content 2",
                 user=self.user,
             ),
             Note.objects.create(
                 title="Note 3",
                 department="Health Sciences",
+                subject="Physiology",
                 content="Test content 3",
                 user=self.user,
             ),
@@ -85,6 +88,7 @@ class DisplayNotesViewTests(TestCase):
             Note.objects.create(
                 title=f"Test Note {i}",
                 department="Philosophy",
+                subject="Modern Philosophy",
                 content="Test note content",
                 user=self.user,
             )
@@ -114,6 +118,7 @@ class NoteViewTests(TestCase):
         self.note = Note.objects.create(
             title="Test Note",
             department="Philosophy",
+            subject="Modern Philosophy",
             content="Test content",
             user=self.user,
         )
@@ -219,6 +224,7 @@ class NewNoteViewTests(TestCase):
         note_data = {
             "title": "Test Note",
             "department": "Philosophy",
+            "subject": "Modern Philosophy",
             "content": "This is a test note content.",
         }
         response = self.client.post(self.url, note_data)
@@ -233,6 +239,7 @@ class NewNoteViewTests(TestCase):
         note_data = {
             "title": "",  # Invalid: title is required
             "department": "Philosophy",
+            "subject": "Modern Philosophy",
             "content": "This is a test note content.",
         }
         self.client.post(self.url, note_data)
@@ -257,6 +264,7 @@ class EditNoteViewTests(TestCase):
         self.note = Note.objects.create(
             title="Original Title",
             department="Philosophy",
+            subject="Modern Philosophy",
             content="Original content.",
             user=self.user,
         )
@@ -270,12 +278,15 @@ class EditNoteViewTests(TestCase):
         updated_data = {
             "title": "Updated Title",
             "department": "Fine Arts",
+            "subject": "Printmaking",
             "content": "Updated content.",
         }
         response = self.client.post(self.url, updated_data)
         self.note.refresh_from_db()
 
         self.assertEqual(self.note.title, updated_data["title"])
+        self.assertEqual(self.note.department, updated_data["department"])
+        self.assertEqual(self.note.subject, updated_data["subject"])
         self.assertEqual(self.note.content, updated_data["content"])
         self.assertRedirects(response, reverse("notes:note", args=[self.note.id]))
 
@@ -295,6 +306,7 @@ class EditNoteViewTests(TestCase):
         invalid_data = {
             "title": "",  # Invalid: title is required
             "department": "Fine Arts",
+            "subject": "Printmaking",
             "content": "Updated content.",
         }
         self.client.post(self.url, invalid_data)
@@ -323,6 +335,7 @@ class DeleteNoteViewTests(TestCase):
         self.note = Note.objects.create(
             title="Test Note",
             department="Philosophy",
+            subject="Modern Philosophy",
             content="Test note content.",
             user=self.user,
         )
