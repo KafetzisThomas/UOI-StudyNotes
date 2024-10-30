@@ -16,6 +16,13 @@ class NoteForm(forms.ModelForm):
         widget=forms.Select(attrs={"class": "form-control bg-dark text-light"}),
         required=True,
     )
+    subject = forms.CharField(
+        label="Subject",
+        widget=forms.Textarea(
+            attrs={"class": "form-control bg-dark text-light", "rows": 1}
+        ),
+        required=True,
+    )
     content = forms.CharField(
         label="Content",
         widget=forms.Textarea(
@@ -26,7 +33,7 @@ class NoteForm(forms.ModelForm):
 
     class Meta:
         model = Note
-        fields = ["title", "department", "content"]
+        fields = ["title", "department", "subject", "content"]
 
 
 class CommentForm(forms.ModelForm):

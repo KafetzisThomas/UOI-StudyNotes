@@ -21,6 +21,7 @@ class NoteFormTests(TestCase):
         self.note_data = {
             "title": "Test Note",
             "department": DEPARTMENTS[0][0],  # "Philosophy" department
+            "subject": "Modern Philosophy",
             "content": "This is test content.",
         }
 
@@ -44,6 +45,12 @@ class NoteFormTests(TestCase):
         # Test missing deparrtment
         data = self.note_data.copy()
         data.pop("department")
+        form = NoteForm(data=data)
+        self.assertFalse(form.is_valid(), form.errors)
+
+        # Test missing subject
+        data = self.note_data.copy()
+        data.pop("subject")
         form = NoteForm(data=data)
         self.assertFalse(form.is_valid(), form.errors)
 
