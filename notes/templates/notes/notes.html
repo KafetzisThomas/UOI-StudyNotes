@@ -23,7 +23,7 @@
     {% for note in page_obj %}
         <article class="media note-section mb-4">
             <div class="media-body">
-                <h2><a class="note-name" href="{% url 'notes:note' note.id %}">{{ note.title }}</a></h2>
+                <h2><a class="note-name" href="{% url 'notes:note' note.id %}">[{{ note.subject }}] {{ note.title }}</a></h2>
                 <p class="card-text">
                     <small class="text-muted">
                         By: {{ note.user.username }} | Department: {{ note.department }} | Comments: {{ note.comments.all|length }} | Likes: {{ note.number_of_likes }} | {{ note.timestamp|date:"d F, Y H:i" }}

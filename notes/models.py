@@ -19,6 +19,7 @@ DEPARTMENTS = (
 class Note(models.Model):
     title = models.CharField(max_length=100)
     department = models.CharField(max_length=100, choices=DEPARTMENTS, default=None)
+    subject = models.CharField(max_length=100)
     content = models.TextField()
     likes = models.ManyToManyField(User, related_name="liked_notes")
     timestamp = models.DateTimeField(auto_now_add=True)
