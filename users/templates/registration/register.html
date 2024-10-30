@@ -23,3 +23,18 @@
         <input type="hidden" name="next" value="{% url 'users:login' %}" />
     </form>
 {% endblock content %}
+
+{% block footer %}
+    <footer class="footer bg-dark text-light py-3 fixed-bottom">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <hr class="border-light mb-2">
+                </div>
+                <div class="col-md-8 text-center">
+                    <p class="mt-1 mb-0">&copy; 2024 KafetzisThomas</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+{% endblock footer %}
