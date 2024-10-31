@@ -29,6 +29,11 @@
 
 </details>
 
+## Django Models
+Here is a graphical representation of the Django models used in this project:
+
+<div align="center"><img src="https://github.com/user-attachments/assets/9257b0fd-200b-42b0-ae4e-5777791470a9" alt="Django Models Graph" width="500"/></div>
+
 ## Setup for Local Development
 
 ### Set up Virtual Environment
