@@ -95,6 +95,8 @@ $ python3 manage.py test notes.tests users.tests
 ### Pull Requests
 Όταν υποβάλετε ένα pull request, θυμηθείτε τα εξής:
 
+* **TODO λίστα**: Eλέγξτε τη [TODO λίστα](https://github.com/KafetzisThomas/UOI-StudyNotes/blob/main/TODO.md) για να βεβαιωθείτε ότι δεν υπάρχει ήδη κάποια ανοιχτή εργασία που θα θέλατε να αναλάβετε (μόνο Αγγλικά λόγω των τεχνικών αναφορών).
+
 * **Διατηρήστε το απλό**: Προτιμήστε να κρατάτε τις αλλαγές σας απλές και στοχευμένες. Οι πιο σύνθετες αλλαγές είναι δυσκολότερο να ελεγχθούν και να ενσωματωθούν.
 
 * **Αποφύγετε την προσθήκη νέων βιβλιοθηκών**: Αν γίνεται, προσπαθήστε να μην προσθέσετε νέες βιβλιοθήκες που δεν είναι τυπικές. Εάν αυτό είναι αποχρεωτικό, παρακαλώ δημιουργήστε πρώτα ένα github issue για να αξιολογηθεί η χρησιμότητα και η συμβατότητά του.
@@ -121,6 +123,8 @@ $ python3 manage.py test notes.tests users.tests
 
 ### Pull Requests
 When submitting a pull request, please keep these points in mind:
+
+* **TODO List**: Check the [TODO List](https://github.com/KafetzisThomas/UOI-StudyNotes/blob/main/TODO.md) to ensure there isn’t already an open task you’d like to work on.
 
 * **Simplicity**: Keep your changes straightforward and focused. Complex changes are harder to review and integrate.
 
