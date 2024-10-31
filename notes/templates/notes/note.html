@@ -61,11 +61,7 @@
                 {% for comment in comments %}
                     <div class="list-group-item bg-dark text-light border rounded mb-2">
                         <p class="mb-1">{{ comment.content|linebreaks }}</p>
-                        {% if comment.user.is_staff %}
-                            <small class="text-muted">By {{ comment.user.username }} <i class="bi bi-shield-shaded" data-toggle="tooltip" title="This user is a moderator"></i> on {{ comment.timestamp|date:"d F, Y H:i" }}</small>
-                        {% else %}
-                            <small class="text-muted">By {{ comment.user.username }} on {{ comment.timestamp|date:"d F, Y H:i" }}</small>
-                        {% endif %}
+                        <small class="text-muted">By {{ comment.user.username }} on {{ comment.timestamp|date:"d F, Y H:i" }}</small>
                     </div>
                 {% empty %}
                     <p class="text-muted">No comments yet.</p>
