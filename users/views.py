@@ -5,6 +5,7 @@ from .forms import CustomUserCreationForm, CustomAuthenticationForm, UpdateUserF
 from django.contrib.auth.views import LoginView
 from .utils import send_update_account_notification
 from django.contrib.auth.models import User
+from django.conf import settings
 from django.contrib import messages
 
 
@@ -30,7 +31,7 @@ def account(request):
         user = User.objects.get(id=request.user.id)
         if form.is_valid():
             form.save()
-            send_update_account_notification(user)
+            send_update_account_notification(user) if not settings.DEBUG else None
             update_session_auth_hash(request, request.user)  # Keep user logged in
             messages.success(
                 request, "Your account credentials have been successfully updated."
