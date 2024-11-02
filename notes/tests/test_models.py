@@ -19,7 +19,7 @@ class NoteModelTests(TestCase):
         Set up the test environment by creating a user and defining note data.
         """
         self.user = User.objects.create_user(
-            username="testuser", email="testuser@example.com", password="password123"
+            username="testuser", email="testuser@uoi.gr", password="password123"
         )
         self.note_data = {
             "title": "Test Note",
@@ -68,7 +68,7 @@ class CommentModelTests(TestCase):
         Set up the test environment by creating a user, a note & a comment.
         """
         self.user = User.objects.create_user(
-            username="testuser", email="testuser@example.com", password="password123"
+            username="testuser", email="testuser@uoi.gr", password="password123"
         )
         self.note = Note.objects.create(
             title="Test Note",

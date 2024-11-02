@@ -23,7 +23,7 @@ class CustomUserCreationFormTests(TestCase):
         """
         self.valid_data = {
             "username": "testuser",
-            "email": "testuser@example.com",
+            "email": "testuser@uoi.gr",
             "password1": "SecRet_p@ssword",
             "password2": "SecRet_p@ssword",
             "captcha_verification": "testsecret",
@@ -64,6 +64,15 @@ class CustomUserCreationFormTests(TestCase):
         form = CustomUserCreationForm(data=data)
         self.assertFalse(form.is_valid(), form.errors)
 
+    def test_form_invalid_email_domain(self, mock: MagicMock) -> None:
+        """
+        Test that the form is invalid if the email domain is not allowed.
+        """
+        data = self.valid_data.copy()
+        data["email"] = "user@invalid.com"
+        form = CustomUserCreationForm(data=data)
+        self.assertFalse(form.is_valid(), form.errors)
+
     def test_form_password_mismatch(self, mock: MagicMock) -> None:
         """
         Test that the form is invalid if passwords do not match.
@@ -85,7 +94,7 @@ class CustomAuthenticationFormTests(TestCase):
         """
         self.user = User.objects.create_user(
             username="testuser",
-            email="testuser@example.com",
+            email="testuser@uoi.gr",
             password="SecRet_p@ssword",
         )
 
@@ -126,7 +135,7 @@ class UpdateUserFormTests(TestCase):
         """
         self.user = User.objects.create_user(
             username="testuser",
-            email="testuser@example.com",
+            email="testuser@uoi.gr",
             password="SecRet_p@ssword",
         )
 
@@ -136,7 +145,7 @@ class UpdateUserFormTests(TestCase):
         """
         data = {
             "username": "new_username",
-            "email": "new_email@example.com",
+            "email": "new_email@uoi.gr",
             "password1": "New_SecRet_p@ssword",
             "password2": "New_SecRet_p@ssword",
         }
@@ -148,7 +157,7 @@ class UpdateUserFormTests(TestCase):
         Test that the form is invalid if required fields are missing.
         """
         # Test missing username
-        data = {"username": "", "email": "new_email@example.com"}
+        data = {"username": "", "email": "new_email@uoi.gr"}
         form = UpdateUserForm(instance=self.user, data=data)
         self.assertFalse(form.is_valid(), form.errors)
 
@@ -163,7 +172,7 @@ class UpdateUserFormTests(TestCase):
         """
         data = {
             "username": "new_username",
-            "email": "new_email@example.com",
+            "email": "new_email@uoi.gr",
             "password1": "New_SecRet_p@ssword",
             "password2": "SecRet_p@ssword",
         }
