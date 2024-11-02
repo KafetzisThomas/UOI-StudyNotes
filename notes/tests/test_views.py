@@ -21,7 +21,7 @@ class DisplayNotesViewTests(TestCase):
         """
         self.client = Client()
         self.user = User.objects.create_user(
-            username="testuser", email="testuser@example.com", password="password123"
+            username="testuser", email="testuser@uoi.gr", password="password123"
         )
         self.notes = [
             Note.objects.create(
@@ -113,7 +113,7 @@ class NoteViewTests(TestCase):
         """
         self.client = Client()
         self.user = User.objects.create_user(
-            username="testuser", email="testuser@example.com", password="password123"
+            username="testuser", email="testuser@uoi.gr", password="password123"
         )
         self.note = Note.objects.create(
             title="Test Note",
@@ -187,7 +187,7 @@ class NewNoteViewTests(TestCase):
         """
         self.client = Client()
         self.user = User.objects.create_user(
-            username="testuser", email="testuser@example.com", password="password123"
+            username="testuser", email="testuser@uoi.gr", password="password123"
         )
         self.client.login(username="testuser", password="password123")
         self.url = reverse("notes:new_note")
@@ -256,10 +256,10 @@ class EditNoteViewTests(TestCase):
         Set up the test environment by creating users & a note.
         """
         self.user = User.objects.create_user(
-            username="testuser", email="testuser@example.com", password="password123"
+            username="testuser", email="testuser@uoi.gr", password="password123"
         )
         self.user2 = User.objects.create_user(
-            username="testuser2", email="testuser2@example.com", password="password456"
+            username="testuser2", email="testuser2@uoi.gr", password="password456"
         )
         self.note = Note.objects.create(
             title="Original Title",
@@ -327,10 +327,10 @@ class DeleteNoteViewTests(TestCase):
         Set up the test environment by creating users & a note.
         """
         self.user = User.objects.create_user(
-            username="testuser", email="testuser@example.com", password="password123"
+            username="testuser", email="testuser@uoi.gr", password="password123"
         )
         self.user2 = User.objects.create_user(
-            username="testuser2", email="testuser2@example.com", password="password456"
+            username="testuser2", email="testuser2@uoi.gr", password="password456"
         )
         self.note = Note.objects.create(
             title="Test Note",
