@@ -35,6 +35,21 @@ class CustomUserCreationForm(UserCreationForm):
         model = User
         fields = ("username", "email", "password1", "password2", "captcha_verification")
 
+    def clean_email(self):
+        allowed_domains = [
+            "uoi.gr",
+            "gmail.com",
+            "apple.com",
+            "outlook.com",
+        ]
+        email = self.cleaned_data.get("email")
+        domain = email.split("@")[-1]
+        if domain not in allowed_domains:
+            raise ValidationError(
+                "Email domain is not allowed. Please use a valid email address."
+            )
+        return email
+
 
 class CustomAuthenticationForm(AuthenticationForm):
     username = forms.CharField(
