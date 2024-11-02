@@ -8,8 +8,10 @@ handling validation & required fields:
 from django.test import TestCase
 from django.contrib.auth.models import User
 from ..forms import CustomUserCreationForm, CustomAuthenticationForm, UpdateUserForm
+from unittest.mock import MagicMock, patch
 
 
+@patch("turnstile.fields.TurnstileField.validate", return_value=True)
 class CustomUserCreationFormTests(TestCase):
     """
     Test suite for the CustomUserCreationForm.
@@ -24,16 +26,17 @@ class CustomUserCreationFormTests(TestCase):
             "email": "testuser@example.com",
             "password1": "SecRet_p@ssword",
             "password2": "SecRet_p@ssword",
+            "captcha_verification": "testsecret",
         }
 
-    def test_form_valid_data(self):
+    def test_form_valid_data(self, mock: MagicMock) -> None:
         """
         Test that the form is valid with correct data.
         """
         form = CustomUserCreationForm(data=self.valid_data)
         self.assertTrue(form.is_valid(), form.errors)
 
-    def test_form_missing_required_fields(self):
+    def test_form_missing_required_fields(self, mock: MagicMock) -> None:
         """
         Test that the form is invalid if required fields are missing.
         """
@@ -55,13 +58,13 @@ class CustomUserCreationFormTests(TestCase):
         form = CustomUserCreationForm(data=data)
         self.assertFalse(form.is_valid(), form.errors)
 
-        # Test missing condfirmation password
+        # Test missing confirmation password
         data = self.valid_data.copy()
         data.pop("password2")
         form = CustomUserCreationForm(data=data)
         self.assertFalse(form.is_valid(), form.errors)
 
-    def test_form_password_mismatch(self):
+    def test_form_password_mismatch(self, mock: MagicMock) -> None:
         """
         Test that the form is invalid if passwords do not match.
         """

@@ -19,13 +19,15 @@
     <form method="POST" action="{% url 'users:register' %}">
         {% csrf_token %}
         {{ form|crispy }}
-        <button name="submit" class="btn btn-primary">Sign Up</button>
-        <input type="hidden" name="next" value="{% url 'users:login' %}" />
+        <div class="d-grid gap-2">
+            <button name="submit" class="btn btn-primary">Sign Up</button>
+            <input type="hidden" name="next" value="{% url 'users:login' %}" />
+        </div>
     </form>
 {% endblock content %}
 
 {% block footer %}
-    <footer class="footer bg-dark text-light py-3 fixed-bottom">
+    <footer class="footer bg-dark text-light py-3">
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-md-8">
