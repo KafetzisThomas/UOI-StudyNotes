@@ -3,6 +3,7 @@ from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from .forms import CustomUserCreationForm, CustomAuthenticationForm, UpdateUserForm
 from django.contrib.auth.views import LoginView
+from .utils import send_update_account_notification
 from django.contrib.auth.models import User
 from django.contrib import messages
 
@@ -26,8 +27,10 @@ def register(request):
 def account(request):
     if request.method == "POST":
         form = UpdateUserForm(instance=request.user, data=request.POST)
+        user = User.objects.get(id=request.user.id)
         if form.is_valid():
             form.save()
+            send_update_account_notification(user)
             update_session_auth_hash(request, request.user)  # Keep user logged in
             messages.success(
                 request, "Your account credentials have been successfully updated."
