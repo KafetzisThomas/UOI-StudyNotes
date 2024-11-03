@@ -44,7 +44,6 @@ INSTALLED_APPS = [
     "crispy_forms",
     "crispy_bootstrap5",
     "django_extensions",
-    "django_summernote",
     # Default django apps
     "django.contrib.admin",
     "django.contrib.auth",
@@ -143,10 +142,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = "static/"
-STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
-
-MEDIA_URL = "/media/"
-MEDIA_ROOT = os.path.join(BASE_DIR, "media/")
 
 # This production code might break development mode, so we check whether we're in DEBUG mode
 if not DEBUG:

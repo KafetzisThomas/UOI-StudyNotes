@@ -24,7 +24,7 @@
                 </small>
             </div>
             <div class="card-body bg-dark text-light border rounded-left rounded-right rounded-bottom">
-                <p class="card-text">{{ note.content|safe }}</p>
+                <p class="card-text">{{ note.content|linebreaks }}</p>
                 <div class="d-flex float-end mt-4">
                     {% if user.is_authenticated %}
                         {% if request.user == note.user %}
