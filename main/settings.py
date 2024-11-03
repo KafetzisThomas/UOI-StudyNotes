@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     "crispy_forms",
     "crispy_bootstrap5",
     "django_extensions",
+    "django_summernote",
     "turnstile",
     # Default django apps
     "django.contrib.admin",
@@ -143,6 +144,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = "static/"
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+
+MEDIA_URL = "/media/"
+MEDIA_ROOT = os.path.join(BASE_DIR, "media/")
 
 # This production code might break development mode, so we check whether we're in DEBUG mode
 if not DEBUG:
@@ -167,6 +172,14 @@ EMAIL_HOST = "smtp.gmail.com"
 EMAIL_PORT = 587
 EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
+
+# Summernote editor settings
+SUMMERNOTE_CONFIG = {
+    "iframe": False,
+    "width": "100%",
+    "height": "550px",
+    "css": ("/static/summernote.css",),
+}
 
 # Turnstile settings (DEBUG=False)
 if not DEBUG:

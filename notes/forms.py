@@ -1,5 +1,6 @@
 from django import forms
 from .models import Note, Comment, DEPARTMENTS
+from django_summernote.widgets import SummernoteWidget
 
 
 class NoteForm(forms.ModelForm):
@@ -23,13 +24,7 @@ class NoteForm(forms.ModelForm):
         ),
         required=True,
     )
-    content = forms.CharField(
-        label="Content",
-        widget=forms.Textarea(
-            attrs={"class": "form-control bg-dark text-light", "rows": 10}
-        ),
-        required=True,
-    )
+    content = forms.CharField(label="Content", widget=SummernoteWidget(), required=True)
 
     class Meta:
         model = Note
