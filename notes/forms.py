@@ -24,19 +24,7 @@ class NoteForm(forms.ModelForm):
         ),
         required=True,
     )
-    content = forms.CharField(
-        label="Content",
-        widget=SummernoteWidget(
-            attrs={
-                "summernote": {
-                    "width": "100%",
-                    "height": "550px",
-                    "class": "form-control bg-dark text-light",
-                },
-            }
-        ),
-        required=True,
-    )
+    content = forms.CharField(label="Content", widget=SummernoteWidget(), required=True)
 
     class Meta:
         model = Note

@@ -1,0 +1,5 @@
+/* Apply bootstrap's bg-dark & text-light styles */
+.note-editor .note-editable {
+    background-color: #212529;
+    color: #ffffff;
+}
