@@ -11,8 +11,10 @@
     <form method="POST" action="{% url 'users:login' %}">
         {% csrf_token %}
         {{ form|crispy }}
-        <button name="submit" class="btn btn-primary">Log In</button>
-        <input type="hidden" name="next" value="{% url 'notes:display_notes' %}" />
+        <div class="d-grid gap-2">
+            <button name="submit" class="btn btn-primary">Log In</button>
+            <input type="hidden" name="next" value="{% url 'notes:display_notes' %}" />
+        </div>
     </form>
 {% endblock content %}
 

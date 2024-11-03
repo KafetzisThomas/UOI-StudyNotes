@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     "crispy_bootstrap5",
     "django_extensions",
     "django_summernote",
+    "turnstile",
     # Default django apps
     "django.contrib.admin",
     "django.contrib.auth",
@@ -179,3 +180,8 @@ SUMMERNOTE_CONFIG = {
     "height": "550px",
     "css": ("/static/summernote.css",),
 }
+
+# Turnstile settings (DEBUG=False)
+if not DEBUG:
+    TURNSTILE_SITEKEY = os.getenv("TURNSTILE_SITEKEY")
+    TURNSTILE_SECRET = os.getenv("TURNSTILE_SECRET")

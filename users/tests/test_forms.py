@@ -8,8 +8,10 @@ handling validation & required fields:
 from django.test import TestCase
 from django.contrib.auth.models import User
 from ..forms import CustomUserCreationForm, CustomAuthenticationForm, UpdateUserForm
+from unittest.mock import MagicMock, patch
 
 
+@patch("turnstile.fields.TurnstileField.validate", return_value=True)
 class CustomUserCreationFormTests(TestCase):
     """
     Test suite for the CustomUserCreationForm.
@@ -21,19 +23,20 @@ class CustomUserCreationFormTests(TestCase):
         """
         self.valid_data = {
             "username": "testuser",
-            "email": "testuser@example.com",
+            "email": "testuser@uoi.gr",
             "password1": "SecRet_p@ssword",
             "password2": "SecRet_p@ssword",
+            "captcha_verification": "testsecret",
         }
 
-    def test_form_valid_data(self):
+    def test_form_valid_data(self, mock: MagicMock) -> None:
         """
         Test that the form is valid with correct data.
         """
         form = CustomUserCreationForm(data=self.valid_data)
         self.assertTrue(form.is_valid(), form.errors)
 
-    def test_form_missing_required_fields(self):
+    def test_form_missing_required_fields(self, mock: MagicMock) -> None:
         """
         Test that the form is invalid if required fields are missing.
         """
@@ -55,13 +58,22 @@ class CustomUserCreationFormTests(TestCase):
         form = CustomUserCreationForm(data=data)
         self.assertFalse(form.is_valid(), form.errors)
 
-        # Test missing condfirmation password
+        # Test missing confirmation password
         data = self.valid_data.copy()
         data.pop("password2")
         form = CustomUserCreationForm(data=data)
         self.assertFalse(form.is_valid(), form.errors)
 
-    def test_form_password_mismatch(self):
+    def test_form_invalid_email_domain(self, mock: MagicMock) -> None:
+        """
+        Test that the form is invalid if the email domain is not allowed.
+        """
+        data = self.valid_data.copy()
+        data["email"] = "user@invalid.com"
+        form = CustomUserCreationForm(data=data)
+        self.assertFalse(form.is_valid(), form.errors)
+
+    def test_form_password_mismatch(self, mock: MagicMock) -> None:
         """
         Test that the form is invalid if passwords do not match.
         """
@@ -82,7 +94,7 @@ class CustomAuthenticationFormTests(TestCase):
         """
         self.user = User.objects.create_user(
             username="testuser",
-            email="testuser@example.com",
+            email="testuser@uoi.gr",
             password="SecRet_p@ssword",
         )
 
@@ -123,7 +135,7 @@ class UpdateUserFormTests(TestCase):
         """
         self.user = User.objects.create_user(
             username="testuser",
-            email="testuser@example.com",
+            email="testuser@uoi.gr",
             password="SecRet_p@ssword",
         )
 
@@ -133,7 +145,7 @@ class UpdateUserFormTests(TestCase):
         """
         data = {
             "username": "new_username",
-            "email": "new_email@example.com",
+            "email": "new_email@uoi.gr",
             "password1": "New_SecRet_p@ssword",
             "password2": "New_SecRet_p@ssword",
         }
@@ -145,7 +157,7 @@ class UpdateUserFormTests(TestCase):
         Test that the form is invalid if required fields are missing.
         """
         # Test missing username
-        data = {"username": "", "email": "new_email@example.com"}
+        data = {"username": "", "email": "new_email@uoi.gr"}
         form = UpdateUserForm(instance=self.user, data=data)
         self.assertFalse(form.is_valid(), form.errors)
 
@@ -160,7 +172,7 @@ class UpdateUserFormTests(TestCase):
         """
         data = {
             "username": "new_username",
-            "email": "new_email@example.com",
+            "email": "new_email@uoi.gr",
             "password1": "New_SecRet_p@ssword",
             "password2": "SecRet_p@ssword",
         }

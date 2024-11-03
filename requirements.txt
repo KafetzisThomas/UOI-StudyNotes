@@ -9,6 +9,7 @@ django-bootstrap5==24.3
 django-crispy-forms==2.3
 django-extensions==3.2.3
 django-summernote==0.8.20.0
+django-turnstile==0.1.2
 gunicorn==23.0.0
 h11==0.14.0
 packaging==24.1

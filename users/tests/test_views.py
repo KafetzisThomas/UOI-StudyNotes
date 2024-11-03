@@ -6,8 +6,10 @@ This module contains test cases for the following views:
 from django.test import TestCase
 from django.urls import reverse
 from django.contrib.auth.models import User
+from unittest.mock import MagicMock, patch
 
 
+@patch("turnstile.fields.TurnstileField.validate", return_value=True)
 class RegisterViewTests(TestCase):
     """
     Test case for the register view.
@@ -19,21 +21,22 @@ class RegisterViewTests(TestCase):
         """
         self.url = reverse("users:register")
 
-    def test_successful_registration(self):
+    def test_successful_registration(self, mock: MagicMock) -> None:
         """
         Test that a user can register successfully with valid data.
         """
         data = {
             "username": "new_user",
-            "email": "new_user@example.com",
+            "email": "new_user@uoi.gr",
             "password1": "SecRet_p@ssword",
             "password2": "SecRet_p@ssword",
+            "captcha_verification": "testsecret",
         }
         response = self.client.post(self.url, data)
         self.assertEqual(User.objects.count(), 1)
         self.assertRedirects(response, reverse("users:login"))
 
-    def test_invalid_form_data(self):
+    def test_invalid_form_data(self, mock: MagicMock) -> None:
         """
         Test that the form is not valid with incorrect data.
         """
@@ -42,6 +45,7 @@ class RegisterViewTests(TestCase):
             "email": "invalid_email",
             "password1": "SecRet_p@ssword",
             "password2": "New_SecRet_p@ssword",
+            "captcha_verification": "testsecret",
         }
         self.client.post(self.url, data)
         self.assertEqual(User.objects.count(), 0)  # No user should be created
@@ -58,7 +62,7 @@ class AccountViewTests(TestCase):
         """
         self.user = User.objects.create_user(
             username="testuser",
-            email="testuser@example.com",
+            email="testuser@uoi.gr",
             password="SecRet_p@ssword",
         )
         self.url = reverse("users:account")
@@ -70,14 +74,14 @@ class AccountViewTests(TestCase):
         """
         data = {
             "username": "updated_user",
-            "email": "updated_user@example.com",
+            "email": "updated_user@uoi.gr",
             "password1": "New_SecRet_p@ssword",
             "password2": "New_SecRet_p@ssword",
         }
         response = self.client.post(self.url, data)
         self.user.refresh_from_db()
         self.assertEqual(self.user.username, "updated_user")
-        self.assertEqual(self.user.email, "updated_user@example.com")
+        self.assertEqual(self.user.email, "updated_user@uoi.gr")
         self.assertRedirects(response, self.url)
 
     def test_invalid_form_data(self):
@@ -107,7 +111,7 @@ class DeleteAccountViewTests(TestCase):
         """
         self.user = User.objects.create_user(
             username="testuser",
-            email="testuser@example.com",
+            email="testuser@uoi.gr",
             password="SecRet_p@ssword",
         )
         self.url = reverse("users:delete_account")
