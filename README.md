@@ -32,7 +32,7 @@
 ## Django Models
 Here is a graphical representation of the Django models used in this project:
 
-<div align="center"><img src="https://github.com/user-attachments/assets/9257b0fd-200b-42b0-ae4e-5777791470a9" alt="Django Models Graph" width="500"/></div>
+<div align="center"><img src="https://github.com/user-attachments/assets/0933c9db-9f23-49d0-a89a-c17e098d2fb2" alt="Django Models Graph" width="500"/></div>
 
 ## Setup for Local Development
 
