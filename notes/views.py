@@ -90,7 +90,7 @@ def like_note(request, note_id):
 @login_required
 def new_note(request):
     if request.method == "POST":
-        form = NoteForm(data=request.POST)
+        form = NoteForm(data=request.POST, files=request.FILES)
         if form.is_valid():
             obj = form.save(commit=False)
             obj.user = request.user
@@ -111,7 +111,7 @@ def edit_note(request, note_id):
         raise Http404
 
     if request.method == "POST":
-        form = NoteForm(instance=note, data=request.POST)
+        form = NoteForm(instance=note, data=request.POST, files=request.FILES)
         if form.is_valid():
             form.save()
             messages.success(request, "Note modified successfully.")

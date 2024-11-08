@@ -28,7 +28,7 @@ class NoteForm(forms.ModelForm):
 
     class Meta:
         model = Note
-        fields = ["title", "department", "subject", "content"]
+        fields = ["title", "department", "subject", "content", "file"]
 
 
 class CommentForm(forms.ModelForm):
