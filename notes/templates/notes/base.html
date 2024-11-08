@@ -40,24 +40,20 @@
                         <a class="nav-link {% if request.path == '/' %}active{% endif %}" href="{% url 'notes:display_notes' %}">Notes</a>
                     </li>
                     {% if request.path == '/' %}
-                        <!-- department filter dropdown -->
                         <li class="nav-item">
                             <form action="{% url 'notes:display_notes' %}" class="d-flex" method="GET">
-                                <select class="form-select form-select-sm ms-2 mt-1" name="department" onchange="this.form.submit()">
+                                <!-- department filter dropdown -->
+                                <select class="form-select form-select-sm ms-2 mt-1" name="department">
                                     <option value="" {% if not request.GET.department %}selected{% endif %}>All Departments</option>
                                     {% for key, value in DEPARTMENTS %}
                                         <option value="{{ key }}" {% if request.GET.department == key %}selected{% endif %}>{{ value }}</option>
                                     {% endfor %}
                                 </select>
-                            </form>
-                        </li>
-                        <li class="nav-item">
-                            <form action="{% url 'notes:display_notes' %}" class="d-flex" method="GET">
-                                {% if not search_query %}
-                                    <input class="form-control form-control-sm ms-2 mt-1" type="search" name="search_query" placeholder="Search notes...">
-                                {% else %}
-                                    <input class="form-control form-control-sm ms-2 mt-1" type="search" name="search_query" value="{{ search_query }}">
-                                {% endif %}
+
+                                <!-- search field -->
+                                <input class="form-control form-control-sm ms-2 mt-1" type="search" name="search_query" placeholder="Search notes..."
+                                    value="{{ search_query|default:'' }}">
+
                                 <button class="btn btn-sm btn-outline-secondary ms-2 mt-1 h-50" type="submit">Search</button>
                             </form>
                         </li>
