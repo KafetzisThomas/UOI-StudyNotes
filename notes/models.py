@@ -21,6 +21,7 @@ class Note(models.Model):
     department = models.CharField(max_length=100, choices=DEPARTMENTS, default=None)
     subject = models.CharField(max_length=100)
     content = models.TextField()
+    file = models.FileField(upload_to="uploads/", null=True, blank=True)
     likes = models.ManyToManyField(User, related_name="liked_notes")
     timestamp = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)

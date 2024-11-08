@@ -5,6 +5,7 @@ This module contains test cases for the following views:
 
 from django.test import TestCase, Client
 from django.urls import reverse
+from django.core.files.uploadedfile import SimpleUploadedFile
 from django.contrib.auth.models import User
 from ..models import Note
 
@@ -29,6 +30,7 @@ class DisplayNotesViewTests(TestCase):
                 department="Philosophy",
                 subject="Modern Philosophy",
                 content="Test content 1",
+                file=SimpleUploadedFile("testfile1.txt", b"File 1 content."),
                 user=self.user,
             ),
             Note.objects.create(
@@ -36,6 +38,7 @@ class DisplayNotesViewTests(TestCase):
                 department="Informatics and Telecommunications",
                 subject="Programming",
                 content="Test content 2",
+                file=SimpleUploadedFile("testfile2.txt", b"File 2 content."),
                 user=self.user,
             ),
             Note.objects.create(
@@ -43,6 +46,7 @@ class DisplayNotesViewTests(TestCase):
                 department="Health Sciences",
                 subject="Physiology",
                 content="Test content 3",
+                file=SimpleUploadedFile("testfile3.txt", b"File 3 content."),
                 user=self.user,
             ),
         ]
@@ -120,6 +124,7 @@ class NoteViewTests(TestCase):
             department="Philosophy",
             subject="Modern Philosophy",
             content="Test content",
+            file=SimpleUploadedFile("testfile.txt", b"File content."),
             user=self.user,
         )
         self.url = reverse("notes:note", args=[self.note.id])
@@ -226,6 +231,7 @@ class NewNoteViewTests(TestCase):
             "department": "Philosophy",
             "subject": "Modern Philosophy",
             "content": "This is a test note content.",
+            "file": SimpleUploadedFile("testfile.txt", b"File content."),
         }
         response = self.client.post(self.url, note_data)
         self.assertEqual(Note.objects.count(), 1)
@@ -241,6 +247,7 @@ class NewNoteViewTests(TestCase):
             "department": "Philosophy",
             "subject": "Modern Philosophy",
             "content": "This is a test note content.",
+            "file": SimpleUploadedFile("testfile.txt", b"File content."),
         }
         self.client.post(self.url, note_data)
         self.assertEqual(Note.objects.count(), 0)
@@ -266,6 +273,7 @@ class EditNoteViewTests(TestCase):
             department="Philosophy",
             subject="Modern Philosophy",
             content="Original content.",
+            file=SimpleUploadedFile("testfile.txt", b"Original file content."),
             user=self.user,
         )
         self.url = reverse("notes:edit_note", args=[self.note.id])
@@ -280,6 +288,9 @@ class EditNoteViewTests(TestCase):
             "department": "Fine Arts",
             "subject": "Printmaking",
             "content": "Updated content.",
+            "file": SimpleUploadedFile(
+                "updated_test_file.txt", b"Updated file content."
+            ),
         }
         response = self.client.post(self.url, updated_data)
         self.note.refresh_from_db()
@@ -288,6 +299,8 @@ class EditNoteViewTests(TestCase):
         self.assertEqual(self.note.department, updated_data["department"])
         self.assertEqual(self.note.subject, updated_data["subject"])
         self.assertEqual(self.note.content, updated_data["content"])
+        self.assertTrue(self.note.file.name.startswith("uploads/"))
+        self.assertEqual(self.note.file.read(), b"Updated file content.")
         self.assertRedirects(response, reverse("notes:note", args=[self.note.id]))
 
     def test_edit_note_permission_denied(self):
@@ -308,6 +321,9 @@ class EditNoteViewTests(TestCase):
             "department": "Fine Arts",
             "subject": "Printmaking",
             "content": "Updated content.",
+            "file": SimpleUploadedFile(
+                "updated_test_file.txt", b"Updated file content."
+            ),
         }
         self.client.post(self.url, invalid_data)
 
@@ -337,6 +353,7 @@ class DeleteNoteViewTests(TestCase):
             department="Philosophy",
             subject="Modern Philosophy",
             content="Test note content.",
+            file=SimpleUploadedFile("testfile.txt", b"File content."),
             user=self.user,
         )
         self.url = reverse("notes:delete_note", args=[self.note.id])
