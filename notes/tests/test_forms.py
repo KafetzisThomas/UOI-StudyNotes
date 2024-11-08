@@ -6,6 +6,7 @@ This module contains test cases for the following classes:
 
 from django.test import TestCase
 from ..forms import NoteForm, CommentForm
+from django.core.files.uploadedfile import SimpleUploadedFile
 from ..models import DEPARTMENTS
 
 
@@ -23,6 +24,7 @@ class NoteFormTests(TestCase):
             "department": DEPARTMENTS[0][0],  # "Philosophy" department
             "subject": "Modern Philosophy",
             "content": "This is test content.",
+            "file": SimpleUploadedFile("testfile.txt", b"File content."),
         }
 
     def test_note_form_valid(self):

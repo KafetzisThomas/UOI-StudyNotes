@@ -6,6 +6,7 @@ field validations, foreign key constraints, and the __str__ method.
 
 from django.test import TestCase
 from django.contrib.auth.models import User
+from django.core.files.uploadedfile import SimpleUploadedFile
 from ..models import Note, Comment
 
 
@@ -26,6 +27,7 @@ class NoteModelTests(TestCase):
             "department": "Philosophy",
             "subject": "Modern Philosophy",
             "content": "This is test content.",
+            "file": SimpleUploadedFile("testfile.txt", b"File content."),
             "user": self.user,
         }
 
@@ -38,6 +40,8 @@ class NoteModelTests(TestCase):
         self.assertEqual(note.department, self.note_data["department"])
         self.assertEqual(note.subject, self.note_data["subject"])
         self.assertEqual(note.content, self.note_data["content"])
+        self.assertTrue(note.file.name.startswith("uploads/"))
+        self.assertEqual(note.file.read(), b"File content.")
         self.assertEqual(note.user, self.note_data["user"])
         self.assertIsNotNone(note.timestamp)
 
@@ -75,6 +79,7 @@ class CommentModelTests(TestCase):
             department="Philosophy",
             subject="Modern Philosophy",
             content="This is test content.",
+            file=SimpleUploadedFile("testfile.txt", b"File content."),
             user=self.user,
         )
         self.comment_data = {
