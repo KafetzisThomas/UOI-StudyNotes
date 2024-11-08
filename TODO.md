@@ -5,7 +5,7 @@
 - [X] Restrict registration to specific email domains (e.g., UOI, Gmail, Apple, Outlook) to avoid spam bots
 - [x] Improve text area in the note form with a rich text editor (thinking about using django-summernote)
 - [X] Link search query with department dropdown
-- [ ] Allow users to upload additional files (e.g., TXT, PDF, Word, Excel) in notes (images will remain in the content field)
+- [X] Allow users to upload additional files (e.g., TXT, PDF, Word, Excel) in notes (images will remain in the content field)
 - [X] Add subject field on note form
 - [X] Write tests for each application
 - [X] Create a docker file for containerized setup
