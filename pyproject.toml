@@ -1,0 +1,30 @@
+[project]
+name = "uoi-studynotes"
+version = "0.1.0"
+description = "A notes archive app for UOI students."
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "asgiref==3.8.1",
+    "bleach==6.2.0",
+    "brotli==1.1.0",
+    "click==8.1.7",
+    "crispy-bootstrap5==2024.10",
+    "dj-database-url==2.3.0",
+    "django==5.1.4",
+    "django-bootstrap5==24.3",
+    "django-crispy-forms==2.3",
+    "django-extensions==3.2.3",
+    "django-summernote==0.8.20.0",
+    "django-turnstile==0.1.2",
+    "gunicorn==23.0.0",
+    "h11==0.14.0",
+    "packaging==24.1",
+    "psycopg2-binary==2.9.10",
+    "python-dotenv==1.0.1",
+    "sqlparse==0.5.1",
+    "typing-extensions==4.12.2",
+    "uvicorn==0.32.0",
+    "webencodings==0.5.1",
+    "whitenoise==6.8.2",
+]
