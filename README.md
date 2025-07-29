@@ -4,9 +4,6 @@
         A notes archive app for UOI students.<br>
         Written in Python/Django
     </p>
-    <a href="https://github.com/KafetzisThomas/UOI-StudyNotes/actions/workflows/tests.yml">
-        <img src = "https://github.com/KafetzisThomas/UOI-studyNotes/actions/workflows/tests.yml/badge.svg" alt="Run Tests"/>
-    </a>
 </div>
 
 ---
