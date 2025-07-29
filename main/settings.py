@@ -30,7 +30,10 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DEBUG", "").lower() == "true"
 
-ALLOWED_HOSTS = ["localhost", "127.0.0.1", "uoi-studynotes.onrender.com"]
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "127.0.0.1,localhost").split(",")
+CSRF_TRUSTED_ORIGINS = os.getenv(
+    "CSRF_TRUSTED_ORIGINS", "https://127.0.0.1,https://localhost"
+).split(",")
 
 
 # Application definition
@@ -45,7 +48,6 @@ INSTALLED_APPS = [
     "crispy_bootstrap5",
     "django_extensions",
     "django_summernote",
-    "turnstile",
     # Default django apps
     "django.contrib.admin",
     "django.contrib.auth",
@@ -57,7 +59,6 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
-    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -149,14 +150,6 @@ STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media/")
 
-# This production code might break development mode, so we check whether we're in DEBUG mode
-if not DEBUG:
-    # Tell Django to copy static assets into a path called `staticfiles` (this is specific to Render)
-    STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
-    # Enable the WhiteNoise storage backend, which compresses static files to reduce disk use
-    # and renames the files with unique names for each version to support long-term caching
-    STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
-
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
@@ -181,7 +174,6 @@ SUMMERNOTE_CONFIG = {
     "css": ("/static/summernote.css",),
 }
 
-# Turnstile settings (DEBUG=False)
-if not DEBUG:
-    TURNSTILE_SITEKEY = os.getenv("TURNSTILE_SITEKEY")
-    TURNSTILE_SECRET = os.getenv("TURNSTILE_SECRET")
+INTERNAL_IPS = [
+    "127.0.0.1",
+]

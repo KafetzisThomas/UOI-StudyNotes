@@ -16,7 +16,6 @@ dependencies = [
     "django-crispy-forms==2.4",
     "django-extensions==3.2.3",
     "django-summernote==0.8.20.0",
-    "django-turnstile==0.1.2",
     "gunicorn==23.0.0",
     "h11==0.16.0",
     "packaging==25.0",
