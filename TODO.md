@@ -1,7 +1,6 @@
 # TODO List
 
 - [X] Send email notification when user credentials have been updated
-- [X] Add Cloudflare CAPTCHA verification on registration form to prevent bot sign-ups
 - [X] Restrict registration to specific email domains (e.g., UOI, Gmail, Apple, Outlook) to avoid spam bots
 - [x] Improve text area in the note form with a rich text editor (thinking about using django-summernote)
 - [X] Link search query with department dropdown
