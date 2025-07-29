@@ -8,7 +8,6 @@
 - [X] Allow users to upload additional files (e.g., TXT, PDF, Word, Excel) in notes (images will remain in the content field)
 - [X] Add subject field on note form
 - [X] Write tests for each application
-- [X] Create a docker file for containerized setup
 - [X] Make it responsive on smaller screens
 - [X] Display messages when note has been created, modified or deleted
 - [X] Add search query input to filter notes by title

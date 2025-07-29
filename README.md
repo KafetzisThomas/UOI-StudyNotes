@@ -53,12 +53,6 @@ DEBUG=True  # For development
 
 Save changes and close the file.
 
-> **Note:** You can run the application using Docker:
->
-> ```bash
-> docker compose up
-> ```
-
 ### Migrate Database
 
 ```bash
