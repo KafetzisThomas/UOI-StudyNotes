@@ -23,7 +23,7 @@ dependencies = [
     "python-dotenv==1.0.1",
     "sqlparse==0.5.3",
     "typing-extensions==4.12.2",
-    "uvicorn==0.32.0",
+    "uvicorn==0.35.0",
     "webencodings==0.5.1",
     "whitenoise==6.8.2",
 ]
