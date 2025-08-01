@@ -14,7 +14,7 @@ dependencies = [
     "django==5.2.4",
     "django-bootstrap5==24.3",
     "django-crispy-forms==2.4",
-    "django-extensions==3.2.3",
+    "django-extensions==4.1",
     "django-summernote==0.8.20.0",
     "gunicorn==23.0.0",
     "h11==0.16.0",
