@@ -6,7 +6,7 @@ readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "asgiref==3.10.0",
-    "bleach==6.2.0",
+    "bleach==6.3.0",
     "brotli==1.1.0",
     "click==8.3.0",
     "crispy-bootstrap5==2025.6",
@@ -19,11 +19,11 @@ dependencies = [
     "gunicorn==23.0.0",
     "h11==0.16.0",
     "packaging==25.0",
-    "psycopg2-binary==2.9.10",
-    "python-dotenv==1.1.1",
+    "psycopg2-binary==2.9.11",
+    "python-dotenv==1.2.1",
     "sqlparse==0.5.3",
     "typing-extensions==4.15.0",
-    "uvicorn==0.37.0",
+    "uvicorn==0.38.0",
     "webencodings==0.5.1",
     "whitenoise==6.11.0",
 ]
