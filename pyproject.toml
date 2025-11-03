@@ -20,10 +20,10 @@ dependencies = [
     "h11==0.16.0",
     "packaging==25.0",
     "psycopg2-binary==2.9.11",
-    "python-dotenv==1.1.1",
+    "python-dotenv==1.2.1",
     "sqlparse==0.5.3",
     "typing-extensions==4.15.0",
-    "uvicorn==0.37.0",
+    "uvicorn==0.38.0",
     "webencodings==0.5.1",
     "whitenoise==6.11.0",
 ]
