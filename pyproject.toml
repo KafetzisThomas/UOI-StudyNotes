@@ -19,7 +19,7 @@ dependencies = [
     "gunicorn==25.3.0",
     "h11==0.16.0",
     "packaging==26.2",
-    "psycopg2-binary==2.9.11",
+    "psycopg2-binary==2.9.12",
     "python-dotenv==1.2.2",
     "sqlparse==0.5.5",
     "typing-extensions==4.15.0",
