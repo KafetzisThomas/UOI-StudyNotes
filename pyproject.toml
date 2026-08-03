@@ -5,7 +5,7 @@ description = "A notes archive app for UOI students."
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
-    "asgiref==3.11.1",
+    "asgiref==3.12.1",
     "bleach==6.4.0",
     "brotli==1.2.0",
     "click==8.4.2",
