@@ -20,7 +20,7 @@ dependencies = [
     "h11==0.16.0",
     "packaging==26.2",
     "psycopg2-binary==2.9.12",
-    "python-dotenv==1.2.2",
+    "python-dotenv==1.2.3",
     "sqlparse==0.5.5",
     "typing-extensions==4.16.0",
     "uvicorn==0.52.0",
