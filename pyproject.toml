@@ -5,11 +5,13 @@ description = "A notes archive app for UOI students."
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "boto3>=1.43.87",
     "crispy-bootstrap5==2026.3",
     "dj-database-url==3.1.2",
     "django==6.1",
     "django-crispy-forms==2.7",
     "django-extensions==4.1",
+    "django-storages>=1.14.6",
     "django-summernote==0.8.20.0",
     "gunicorn==26.0.0",
     "psycopg2-binary==2.9.12",
