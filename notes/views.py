@@ -10,31 +10,23 @@ from .forms import NoteForm, CommentForm
 from .utils import send_comment_notification
 
 def display_notes(request):
-    # Retrieve selected department & search query,
-    # from the query parameters
     department = request.GET.get("department")
-    search_query = request.GET.get("search_query")
+    search = request.GET.get("search")
+
     notes = Note.objects.all().order_by("-timestamp")
 
-    # Filter notes by search query in the title if provided
-    if search_query:
-        notes = notes.filter(title__icontains=search_query)
+    if search:
+        notes = notes.filter(title__icontains=search)
 
-    # Filter notess by department if a department is selected
     if department:
         notes = notes.filter(department=department)
 
-    paginator = Paginator(notes, 10)  # Display 10 notes per page
+    paginator = Paginator(notes, 10)
     page_number = request.GET.get("page")
-    page_obj = paginator.get_page(page_number)
+    page = paginator.get_page(page_number)
 
-    context = {
-        "page_obj": page_obj,
-        "DEPARTMENTS": DEPARTMENTS,
-        "search_query": search_query,
-    }
+    context = {"departments": DEPARTMENTS, "search": search, "page": page}
     return render(request, "notes/notes.html", context)
-
 
 def note(request, note_id):
     note = get_object_or_404(Note, id=note_id)

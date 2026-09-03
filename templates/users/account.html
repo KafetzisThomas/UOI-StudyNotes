@@ -4,11 +4,7 @@
 
 {% block title %}Account Settings{% endblock title %}
 
-{% block page_header %}
-    <h2>Your account settings.</h2>
-{% endblock page_header %}
-
-{% block content %}
+{% block content %}    
     {% if messages %}
         {% for message in messages %}
             <div class="alert alert-success text-center" role="alert">
@@ -17,6 +13,7 @@
         {% endfor %}
     {% endif %}
 
+    <h2>Your account settings.</h2>
     <form method="POST" action="{% url 'users:account' %}">
         {% csrf_token %}
         {{ form|crispy }}

@@ -1,7 +1,6 @@
-from django.conf import settings
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
-
+from django.conf import settings
 
 def send_comment_notification(sender, receiver, note_url, comment):
     subject = f'{sender}: Left a comment to your note - "{comment.note}"'

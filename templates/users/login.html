@@ -3,11 +3,8 @@
 
 {% block title %}Login{% endblock title %}
 
-{% block page_header %}
-    <h2>Log in to your account.</h2>
-{% endblock page_header %}
-
 {% block content %}
+    <h2>Log in to your account.</h2>
     <form method="POST" action="{% url 'users:login' %}">
         {% csrf_token %}
         {{ form|crispy }}

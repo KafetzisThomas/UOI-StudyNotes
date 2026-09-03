@@ -2,15 +2,6 @@
 
 {% block title %}UOI-StudyNotes{% endblock title %}
 
-{% block page_header %}
-    <h3 class="text-center">Notes Archive</h3>
-    <div class="row">
-        <div class="col">
-            <hr class="mb-2 mt-0">
-        </div>
-    </div>
-{% endblock page_header %}
-
 {% block content %}
     {% if messages %}
         {% for message in messages %}
@@ -20,7 +11,14 @@
         {% endfor %}
     {% endif %}
 
-    {% for note in page_obj %}
+    <h3 class="text-center">Notes Archive</h3>
+    <div class="row">
+        <div class="col">
+            <hr class="mb-2 mt-0">
+        </div>
+    </div>
+
+    {% for note in page %}
         <article class="media note-section mb-4">
             <div class="media-body">
                 <h2><a class="note-name" href="{% url 'notes:note' note.id %}">[{{ note.subject }}] {{ note.title }}</a></h2>
@@ -38,11 +36,11 @@
     {% endfor %}
     <div class="pagination justify-content-center me-4 mt-4">
         <ul class="pagination">
-            {% if page_obj %}
-                {% if page_obj.has_previous %}
+            {% if page %}
+                {% if page.has_previous %}
                     <li class="page-item">
                         <a class="page-link bg-dark text-white text-decoration-none"
-                        href="?page={{ page_obj.previous_page_number }}"
+                        href="?page={{ page.previous_page_number }}"
                         style="outline: auto;"
                         onclick="this.blur();">
                         &lt;&lt;
@@ -59,10 +57,10 @@
                     </li>
                 {% endif %}
         
-                {% if page_obj.has_next %}
+                {% if page.has_next %}
                     <li class="page-item">
                         <a class="page-link bg-dark text-white text-decoration-none"
-                        href="?page={{ page_obj.next_page_number }}"
+                        href="?page={{ page.next_page_number }}"
                         style="outline: auto;"
                         onclick="this.blur();">
                         &gt;&gt;

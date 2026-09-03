@@ -3,11 +3,8 @@
 
 {% block title %}UOI-StudyNotes - Edit Note{% endblock title %}
 
-{% block page_header %}
-    <h2>Edit Note:</h2>
-{% endblock page_header %}
-
 {% block content %}
+    <h2>Edit Note:</h2>
     <form action="{% url 'notes:edit_note' note.id %}" method='POST' class="form" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form|crispy }}
