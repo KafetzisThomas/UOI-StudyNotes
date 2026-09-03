@@ -1,24 +1,15 @@
 {% load static %}
 <!DOCTYPE html>
 <html>
-
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <!-- Webpage title -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{% block title %}{% endblock title %}</title>
 
-    <!-- Bootstrap CSS -->
-    {% load django_bootstrap5 %}
-    {% bootstrap_css %}
-    {% bootstrap_javascript %}
-
-    <!-- Custom styles -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
     <link rel="stylesheet" type="text/css" href="{% static 'main.css' %}">
 </head>
-
 <body>
     <!-- navbar start -->
     <nav class="navbar navbar-expand-lg bg-dark border-bottom border-body" data-bs-theme="dark">
@@ -42,7 +33,6 @@
                     {% if request.path == '/' %}
                         <li class="nav-item">
                             <form action="{% url 'notes:display_notes' %}" class="d-flex" method="GET">
-                                <!-- department filter dropdown -->
                                 <select class="form-select form-select-sm ms-2 mt-1" name="department">
                                     <option value="" {% if not request.GET.department %}selected{% endif %}>All Departments</option>
                                     {% for key, value in DEPARTMENTS %}
@@ -50,7 +40,6 @@
                                     {% endfor %}
                                 </select>
 
-                                <!-- search field -->
                                 <input class="form-control form-control-sm ms-2 mt-1" type="search" name="search_query" placeholder="Search notes..."
                                     value="{{ search_query|default:'' }}">
 
@@ -103,24 +92,23 @@
     <style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
     <!-- github ribbon end -->
 
+    <!-- custom content start -->
     <main role="main" class="container">
         <div class="row justify-content-center mt-lg-5 mt-3">
             <div class="col-md-8 pb-2 mb-2">
-                <!-- custom page header start -->
                 {% block page_header %}{% endblock page_header %}
-                <!-- custom page header end -->
             </div>
             <div class="col-md-8">
-                <!-- custom content start -->
                 {% block content %}{% endblock %}
-                <!-- custom content end -->
             </div>
         </div>
     </main>
+    <!-- custom content end -->
 
     <!-- footer start -->
     {% block footer %}{% endblock footer %}
     <!-- footer end -->
-</body>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+</body>
 </html>

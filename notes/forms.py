@@ -1,6 +1,6 @@
 from django import forms
-from .models import Note, Comment, DEPARTMENTS
 from django_summernote.widgets import SummernoteWidget
+from .models import Note, Comment, DEPARTMENTS
 
 
 class NoteForm(forms.ModelForm):
