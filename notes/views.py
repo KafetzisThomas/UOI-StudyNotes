@@ -32,7 +32,6 @@ def note(request, note_id):
     note = get_object_or_404(Note, id=note_id)
     comments = note.comments.all()
 
-    # Like functionality
     liked = False
     if note.likes.filter(id=request.user.id).exists():
         liked = True
@@ -66,7 +65,7 @@ def note(request, note_id):
     }
     return render(request, "notes/note.html", context)
 
-
+@login_required
 def like_note(request, note_id):
     note = get_object_or_404(Note, id=note_id)
     if note.likes.filter(id=request.user.id).exists():
@@ -75,7 +74,6 @@ def like_note(request, note_id):
         note.likes.add(request.user)
 
     return HttpResponseRedirect(reverse("notes:note", args=[note_id]))
-
 
 @login_required
 def new_note(request):
@@ -92,7 +90,6 @@ def new_note(request):
 
     context = {"form": form}
     return render(request, "notes/new_note.html", context)
-
 
 @login_required
 def edit_note(request, note_id):
@@ -112,7 +109,6 @@ def edit_note(request, note_id):
 
     context = {"note": note, "form": form}
     return render(request, "notes/edit_note.html", context)
-
 
 @login_required
 def delete_note(request, note_id):
