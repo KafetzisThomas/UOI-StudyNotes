@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import update_session_auth_hash
+from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LoginView
-from django.contrib.auth.models import User
 from django.contrib import messages
 from .forms import RegistrationForm, CustomAuthenticationForm, UsernameUpdateForm, EmailUpdateForm, NewPasswordChangeForm
 
@@ -55,10 +55,10 @@ def update_password(request):
     return render(request, "users/update_password.html", {"form": form})
 
 @login_required
+@require_POST
 def delete_account(request):
-    user = User.objects.get(id=request.user.id)
+    user = request.user
     user.delete()
-    messages.error(request, "Your account has been deleted along with all associated data.")
     return redirect("users:register")
 
 

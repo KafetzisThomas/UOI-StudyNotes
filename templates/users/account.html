@@ -31,22 +31,23 @@
     <h3 class="mb-4">Security Settings</h3>
     <div class="d-flex flex-column gap-2 mb-4">
         <a href="{% url 'users:update_password' %}" class="btn btn-primary w-100"><i class="bi bi-key"></i> Update Password</a>
-        <button type="button" class="btn btn-danger w-100 mt-2 mb-4" data-bs-toggle="modal" data-bs-target="#delete_account_modal"><i class="bi bi-trash"></i> Delete Account</button>
+        <button type="button" class="btn btn-danger w-100 mt-2 mb-4" data-bs-toggle="modal" data-bs-target="#deleteAccountModal"><i class="bi bi-trash"></i> Delete Account</button>
     </div>
 
-    <div class="modal fade" id="delete_account_modal" tabindex="-1" aria-labelledby="delete_account_modal_label" aria-hidden="true">
+    <div class="modal fade" id="deleteAccountModal" tabindex="-1" aria-labelledby="deleteAccountModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content bg-dark">
+            <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5 text-light" id="delete_account_modal_label">DELETE ACCOUNT</h1>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <h5 class="modal-title text-danger" id="deleteAccountModalLabel">Delete Account?</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body text-light">
-                    Procceed below to delete your account and all associated data. Deleting your account is permanent. It cannot be undone.
-                </div>
+                <div class="modal-body">Deleting your account is permanent. It cannot be undone.</div>
                 <div class="modal-footer">
-                    <a class="btn btn-danger" href="{% url 'users:delete_account' %}" role="button">Delete account</a>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <form method="post" action="{% url 'users:delete_account' %}" class="d-flex gap-2 w-100">
+                        {% csrf_token %}
+                        <button type="button" class="btn btn-secondary flex-fill" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-danger flex-fill">Delete Account</button>
+                    </form>
                 </div>
             </div>
         </div>
