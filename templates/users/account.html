@@ -1,28 +1,39 @@
 {% extends "base.html" %}
 {% load crispy_forms_tags %}
-{% load static %}
 
 {% block title %}Account Settings{% endblock title %}
 
-{% block content %}    
+{% block content %}
     {% if messages %}
         {% for message in messages %}
-            <div class="alert alert-success text-center" role="alert">
+            <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %} text-center">
                 {{ message }}
             </div>
         {% endfor %}
     {% endif %}
 
-    <h2>Your account settings.</h2>
-    <form method="POST" action="{% url 'users:account' %}">
+    <h2>Your Account Settings</h2>
+
+    <form action="{% url 'users:account' %}" method="post" class="mb-4 border-bottom pb-4">
         {% csrf_token %}
-        {{ form|crispy }}
-        <button name="submit" class="btn btn-primary"><i class="bi bi-floppy"></i> Save changes</button>
-        <a class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#delete_account_modal" role="button"><i class="bi bi-trash"></i> Delete account</a>
-        <input type="hidden" name="next" value="{% url 'users:account' %}" />
+        <input type="hidden" name="action" value="update_username">
+        {{ username_form|crispy }}
+        <button type="submit" class="btn btn-primary w-100 mt-2">Update Username</button>
     </form>
 
-    <!-- Delete account modal start -->
+    <form action="{% url 'users:account' %}" method="post" class="mb-4 border-bottom pb-4">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="update_email">
+        {{ email_form|crispy }}
+        <button type="submit" class="btn btn-primary w-100 mt-2">Update Email</button>
+    </form>
+
+    <h3 class="mb-4">Security Settings</h3>
+    <div class="d-flex flex-column gap-2 mb-4">
+        <a href="{% url 'users:update_password' %}" class="btn btn-primary w-100"><i class="bi bi-key"></i> Update Password</a>
+        <button type="button" class="btn btn-danger w-100 mt-2 mb-4" data-bs-toggle="modal" data-bs-target="#delete_account_modal"><i class="bi bi-trash"></i> Delete Account</button>
+    </div>
+
     <div class="modal fade" id="delete_account_modal" tabindex="-1" aria-labelledby="delete_account_modal_label" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content bg-dark">
@@ -40,7 +51,6 @@
             </div>
         </div>
     </div>
-    <!-- Delete account modal end -->
 {% endblock content %}
 
 {% block footer %}
