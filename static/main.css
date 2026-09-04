@@ -1,8 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
 
 body {
-  background: #212529;
-  color: #fff;
   font-family: 'Roboto', sans-serif;
   font-weight: 400;
   font-style: normal;
@@ -22,24 +20,20 @@ body {
 }
 
 .note-section {
-  background: #2c3035;
+  background: var(--bs-tertiary-bg);
   padding: 10px 20px;
-  border: 1px solid #343a40;
+  border: 1px solid var(--bs-border-color);
   border-radius: 3px;
   margin-bottom: 20px;
 }
 
 .note-name {
-  color: #fff;
+  color: var(--bs-body-color);
   font-size: 25px;
   text-decoration: none;
   transition: color 0.3s ease;
 }
 
 .note-name:hover {
-  color: #adb5bd;
-}
-
-.text-muted {
-  color: #adb5bd !important;
+  color: var(--bs-secondary-color);
 }

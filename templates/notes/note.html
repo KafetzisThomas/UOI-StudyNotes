@@ -13,17 +13,16 @@
     {% endif %}
 
     <div class="container mt-4 mb-4">
-        <!-- note section -->
-        <div class="card bg-dark mb-4">
-            <div class="card-header align-items-center bg-dark border rounded-top mb-0">
-                <h3 class="text-light mb-1">[{{ note.subject }}] {{ note.title }}</h3>
+        <div class="card mb-4">
+            <div class="card-header align-items-center border rounded-top mb-0">
+                <h3 class="mb-1">[{{ note.subject }}] {{ note.title }}</h3>
                 <small class="text-muted">
                     <span class="badge bg-secondary">By: {{ note.user.username }}</span>
                     <span class="badge bg-secondary">Department: {{ note.department }}</span>
                     <span class="badge bg-secondary">Created: {{ note.timestamp|date:"d F, Y H:i" }}</span>
                 </small>
             </div>
-            <div class="card-body bg-dark text-light border rounded-left rounded-right rounded-bottom">
+            <div class="card-body border rounded-left rounded-right rounded-bottom">
                 <p class="card-text">{{ note.content|safe }}</p>
                 {% if note.file %}
                     <a href="{{ note.file.url }}" download="{{ note.file.name }}">{{ note.file.name }}</a>
@@ -31,18 +30,16 @@
                 <div class="d-flex float-end mt-4">
                     {% if user.is_authenticated %}
                         {% if request.user == note.user %}
-                            <!-- delete button trigger modal -->
-                            <button class="btn btn-outline-light me-1" type="button" data-toggle="tooltip" title="Delete Note" data-bs-toggle="modal" data-bs-target="#delete_note_modal">
+                            <button class="btn btn-outline-secondary me-1" type="button" data-toggle="tooltip" title="Delete Note" data-bs-toggle="modal" data-bs-target="#delete_note_modal">
                                 <i class="bi bi-trash"></i>
                             </button>
-                            <a href="{% url 'notes:edit_note' note.id %}" class="btn btn-outline-light me-1" data-toggle="tooltip" title="Edit Note">
+                            <a href="{% url 'notes:edit_note' note.id %}" class="btn btn-outline-secondary me-1" data-toggle="tooltip" title="Edit Note">
                                 <i class="bi bi-pencil-square"></i>
                             </a>
                         {% endif %}
-                        <!-- display like button & like count -->
                         <form action="{% url 'notes:like_note' note.id %}" method="POST">
                             {% csrf_token %}
-                            <button class="btn btn-outline-light me-1" type="submit" data-toggle="tooltip" title="{{ number_of_likes }} likes">
+                            <button class="btn btn-outline-secondary me-1" type="submit" data-toggle="tooltip" title="{{ number_of_likes }} likes">
                                 {% if note_is_liked %}
                                     <i class="bi bi-heart-fill"></i>
                                 {% else %}
@@ -50,7 +47,7 @@
                                 {% endif %}
                             </button>
                         </form>
-                        <button class="btn btn-outline-light comment-btn" type="button" data-toggle="tooltip" title="Comment" data-bs-toggle="collapse" data-bs-target="#CommentForm-{{ note.id }}" aria-expanded="false" aria-controls="CommentForm-{{ note.id }}">
+                        <button class="btn btn-outline-secondary comment-btn" type="button" data-toggle="tooltip" title="Comment" data-bs-toggle="collapse" data-bs-target="#CommentForm-{{ note.id }}" aria-expanded="false" aria-controls="CommentForm-{{ note.id }}">
                             <i class="bi bi-reply-fill"></i>
                         </button>
                     {% endif %}
@@ -58,11 +55,10 @@
             </div>
         </div>
 
-        <!-- comments section -->
         <div>
             <div class="list-group">
                 {% for comment in comments %}
-                    <div class="list-group-item bg-dark text-light border rounded mb-2">
+                    <div class="list-group-item border rounded mb-2">
                         <p class="mb-1">{{ comment.content|linebreaks }}</p>
                         <small class="text-muted">By {{ comment.user.username }} on {{ comment.timestamp|date:"d F, Y H:i" }}</small>
                     </div>
@@ -74,7 +70,6 @@
 
         <hr>
 
-        <!-- comment section -->
         <div>
             <form class="collapse mt-4" id="CommentForm-{{ note.id }}" method="POST">
                 {% csrf_token %}
@@ -83,15 +78,14 @@
             </form>
         </div>
 
-        <!-- Delete note modal start -->
         <div class="modal fade" id="delete_note_modal" tabindex="-1" aria-labelledby="delete_note_modal_label" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content bg-dark">
+                <div class="modal-content">
                     <div class="modal-header">
-                        <h1 class="modal-title fs-5 text-light" id="delete_note_modal_label">Delete Note?</h1>
-                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <h1 class="modal-title fs-5" id="delete_note_modal_label">Delete Note?</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="modal-body text-light">
+                    <div class="modal-body">
                         Are you sure you want to delete this note?
                     </div>
                     <div class="modal-footer">
@@ -104,7 +98,6 @@
                 </div>
             </div>
         </div>
-        <!-- Delete note modal end -->
     </div>
 
     <script>
@@ -113,14 +106,13 @@
             commentBtn.addEventListener('click', function () {
                 const targetForm = document.querySelector(this.getAttribute('data-bs-target'));
                 targetForm.addEventListener('shown.bs.collapse', function () {
-                    // Scroll to the form after pressing the comment button
+                    // scroll to the comments form
                     targetForm.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
-                    // Focus the content field (textarea)
                     const textarea = targetForm.querySelector('textarea');
-                    textarea.focus();
+                    textarea.focus();  // focus on content field
 
-                }, { once: true });  // Trigger once per click, avoid duplicate event listeners
+                }, { once: true });  // trigger once per click, avoid duplicate event listeners
             });
         });
     </script>

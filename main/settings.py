@@ -185,5 +185,4 @@ SUMMERNOTE_CONFIG = {
     "iframe": False,
     "width": "100%",
     "height": "550px",
-    "css": ("/static/summernote.css",),
 }

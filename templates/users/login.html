@@ -9,7 +9,7 @@
         {% csrf_token %}
         {{ form|crispy }}
         <div class="d-grid gap-2">
-            <button name="submit" class="btn btn-primary">Log In</button>
+            <button name="submit" class="btn btn-primary">Login</button>
             <input type="hidden" name="next" value="{% url 'notes:notes' %}" />
         </div>
     </form>

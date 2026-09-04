@@ -2,9 +2,10 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import update_session_auth_hash
 from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.views import LoginView
 from django.contrib import messages
-from .forms import RegistrationForm, CustomAuthenticationForm, UsernameUpdateForm, EmailUpdateForm, NewPasswordChangeForm
+from .forms import RegistrationForm, UsernameUpdateForm, EmailUpdateForm, NewPasswordChangeForm
 
 def register(request):
     if request.method == "POST":
@@ -63,4 +64,4 @@ def delete_account(request):
 
 
 class CustomLoginView(LoginView):
-    authentication_form = CustomAuthenticationForm
+    authentication_form = AuthenticationForm

@@ -34,48 +34,15 @@
             <h5>There are no notes.</h5>
         </div>
     {% endfor %}
-    <div class="pagination justify-content-center me-4 mt-4">
+    <div class="d-flex justify-content-center mt-4">
         <ul class="pagination">
             {% if page %}
-                {% if page.has_previous %}
-                    <li class="page-item">
-                        <a class="page-link bg-dark text-white text-decoration-none"
-                        href="?page={{ page.previous_page_number }}"
-                        style="outline: auto;"
-                        onclick="this.blur();">
-                        &lt;&lt;
-                        </a>
-                    </li>
-                {% else %}
-                    <li class="page-item disabled">
-                        <a class="page-link bg-dark text-white text-decoration-none"
-                        href="#"
-                        style="pointer-events: none; opacity: 0.6; cursor: not-allowed; outline: none;"
-                        onclick="event.preventDefault();">
-                        &lt;&lt;
-                        </a>
-                    </li>
-                {% endif %}
-        
-                {% if page.has_next %}
-                    <li class="page-item">
-                        <a class="page-link bg-dark text-white text-decoration-none"
-                        href="?page={{ page.next_page_number }}"
-                        style="outline: auto;"
-                        onclick="this.blur();">
-                        &gt;&gt;
-                        </a>
-                    </li>
-                {% else %}
-                    <li class="page-item disabled">
-                        <a class="page-link bg-dark text-white text-decoration-none"
-                        href="#"
-                        style="pointer-events: none; opacity: 0.6; cursor: not-allowed; outline: none;"
-                        onclick="event.preventDefault();">
-                        &gt;&gt;
-                        </a>
-                    </li>
-                {% endif %}
+                <li class="page-item {% if not page.has_previous %}disabled{% endif %}">
+                    <a class="page-link" href="{% if page.has_previous %}?page={{ page.previous_page_number }}{% else %}#{% endif %}">&laquo;</a>
+                </li>
+                <li class="page-item {% if not page.has_next %}disabled{% endif %}">
+                    <a class="page-link" href="{% if page.has_next %}?page={{ page.next_page_number }}{% else %}#{% endif %}">&raquo;</a>
+                </li>
             {% endif %}
         </ul>
     </div>
