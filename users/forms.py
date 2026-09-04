@@ -20,6 +20,15 @@ class RegistrationForm(UserCreationForm):
             raise ValidationError("Email domain is not allowed. Please use a valid email address.")
         return email
 
+    def clean_new_password1(self):
+        password = self.cleaned_data.get("new_password1")
+        if password:
+            result = zxcvbn(password)
+            if result["score"] < 3:  # 0 – 4 (=5 levels)
+                raise forms.ValidationError("Password is too weak. Try adding more characters, numbers or symbols.")
+
+        return password
+
 
 class UsernameUpdateForm(forms.ModelForm):
     class Meta:
