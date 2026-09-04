@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponseRedirect
+from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.core.paginator import Paginator
@@ -104,6 +105,7 @@ def edit_note(request, note_id):
     return render(request, "notes/edit_note.html", context)
 
 @login_required
+@require_POST
 def delete_note(request, note_id):
     note = get_object_or_404(Note, id=note_id, user=request.user)
     note.delete()
