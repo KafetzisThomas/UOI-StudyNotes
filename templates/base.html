@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
     <link rel="stylesheet" type="text/css" href="{% static 'main.css' %}">
 </head>
-<body>
+<body class="d-flex flex-column min-vh-100">
     <!-- navbar start -->
     <nav class="navbar navbar-expand-lg bg-dark border-bottom border-body" data-bs-theme="dark">
         <div class="container">
@@ -103,7 +103,9 @@
     <!-- custom content end -->
 
     <!-- footer start -->
-    {% block footer %}{% endblock footer %}
+    <footer class="border-top border-secondary mt-auto py-3">
+        <p class="text-center text-body-light mb-0">&copy; 2026 KafetzisThomas</p>
+    </footer>
     <!-- footer end -->
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
