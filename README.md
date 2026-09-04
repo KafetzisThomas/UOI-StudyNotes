@@ -33,6 +33,7 @@ First install `uv` and sync the project dependencies:
 cd path/to/root/directory
 pip install uv
 uv sync
+uv sync --group dev  # for devs only
 ```
 
 Migrate database:
