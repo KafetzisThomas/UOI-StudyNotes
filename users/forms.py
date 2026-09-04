@@ -28,6 +28,8 @@ class UsernameUpdateForm(forms.ModelForm):
 
 
 class EmailUpdateForm(forms.ModelForm):
+    email = forms.CharField(label="Email Address", required=True)
+
     class Meta:
         model = User
         fields = ("email",)
