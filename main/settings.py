@@ -172,7 +172,7 @@ if not DEBUG:
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 LOGIN_URL = "users:login"
-LOGIN_REDIRECT_URL = "notes:display_notes"
+LOGIN_REDIRECT_URL = "notes:notes"
 LOGOUT_REDIRECT_URL = "/"
 
 # EMAIL_USE_TLS = True

@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import Http404, HttpResponseRedirect
+from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.core.paginator import Paginator
@@ -9,7 +9,7 @@ from .models import Note, DEPARTMENTS
 from .forms import NoteForm, CommentForm
 from .utils import send_comment_notification
 
-def display_notes(request):
+def notes(request):
     department = request.GET.get("department")
     search = request.GET.get("search")
 
@@ -45,13 +45,10 @@ def note(request, note_id):
             new_comment.note = note
             new_comment.save()
             note_url = reverse("notes:note", args=[note.id])
+
             if not settings.DEBUG and new_comment.user != note.user:
-                send_comment_notification(
-                    sender=new_comment.user,
-                    receiver=note.user,
-                    note_url=note_url,
-                    comment=new_comment,
-                )
+                send_comment_notification(new_comment.user, note.user, note_url, new_comment)
+
             return redirect("notes:note", note_id=note_id)
     else:
         form = CommentForm()
@@ -78,27 +75,23 @@ def like_note(request, note_id):
 @login_required
 def new_note(request):
     if request.method == "POST":
-        form = NoteForm(data=request.POST, files=request.FILES)
+        form = NoteForm(request.POST, request.FILES)
         if form.is_valid():
             obj = form.save(commit=False)
             obj.user = request.user
             form.save()
             messages.success(request, "Note created successfully.")
-            return redirect("notes:display_notes")
+            return redirect("notes:notes")
     else:
         form = NoteForm()
 
-    context = {"form": form}
-    return render(request, "notes/new_note.html", context)
+    return render(request, "notes/new_note.html", {"form": form})
 
 @login_required
 def edit_note(request, note_id):
-    note = get_object_or_404(Note, id=note_id)
-    if note.user != request.user:
-        raise Http404
-
+    note = get_object_or_404(Note, id=note_id, user=request.user)
     if request.method == "POST":
-        form = NoteForm(instance=note, data=request.POST, files=request.FILES)
+        form = NoteForm(request.POST, request.FILES, instance=note)
         if form.is_valid():
             form.save()
             messages.success(request, "Note modified successfully.")
@@ -107,14 +100,12 @@ def edit_note(request, note_id):
         initial_data = {"title": note.title, "content": note.content}
         form = NoteForm(instance=note, initial=initial_data)
 
-    context = {"note": note, "form": form}
+    context = {"form": form, "note": note}
     return render(request, "notes/edit_note.html", context)
 
 @login_required
 def delete_note(request, note_id):
-    note = get_object_or_404(Note, id=note_id)
-    if note.user != request.user:
-        raise Http404
+    note = get_object_or_404(Note, id=note_id, user=request.user)
     note.delete()
     messages.success(request, "Note deleted successfully.")
-    return redirect("notes:display_notes")
+    return redirect("notes:notes")

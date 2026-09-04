@@ -10,7 +10,7 @@
         {{ form|crispy }}
         <div class="d-grid gap-2">
             <button name="submit" class="btn btn-primary">Log In</button>
-            <input type="hidden" name="next" value="{% url 'notes:display_notes' %}" />
+            <input type="hidden" name="next" value="{% url 'notes:notes' %}" />
         </div>
     </form>
 {% endblock content %}

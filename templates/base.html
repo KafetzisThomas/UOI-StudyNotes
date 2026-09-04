@@ -14,7 +14,7 @@
     <!-- navbar start -->
     <nav class="navbar navbar-expand-lg bg-dark border-bottom border-body" data-bs-theme="dark">
         <div class="container">
-            <a class="navbar-brand" href="{% url 'notes:display_notes' %}">UOI-StudyNotes</a>
+            <a class="navbar-brand" href="{% url 'notes:notes' %}">UOI-StudyNotes</a>
 
             <div class="d-flex align-items-center d-sm-none">
                 <a href="https://github.com/KafetzisThomas/UOI-StudyNotes" class="btn bg-dark border me-2" target="_blank" aria-label="View source on GitHub">
@@ -28,11 +28,11 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item">
-                        <a class="nav-link {% if request.path == '/' %}active{% endif %}" href="{% url 'notes:display_notes' %}">Notes</a>
+                        <a class="nav-link {% if request.path == '/' %}active{% endif %}" href="{% url 'notes:notes' %}">Notes</a>
                     </li>
                     {% if request.path == '/' %}
                         <li class="nav-item">
-                            <form action="{% url 'notes:display_notes' %}" class="d-flex" method="GET">
+                            <form action="{% url 'notes:notes' %}" class="d-flex" method="GET">
                                 <select class="form-select form-select-sm ms-2 mt-1" name="department">
                                     <option value="" {% if not request.GET.department %}selected{% endif %}>All Departments</option>
                                     {% for key, value in DEPARTMENTS %}
