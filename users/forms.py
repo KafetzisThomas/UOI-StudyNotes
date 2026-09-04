@@ -13,15 +13,14 @@ class RegistrationForm(UserCreationForm):
         fields = ("email", "username")
 
     def clean_email(self):
-        allowed_domains = ["uoi.gr", "gmail.com", "apple.com", "outlook.com"]
         email = self.cleaned_data.get("email")
         domain = email.split("@")[-1]
-        if domain not in allowed_domains:
-            raise ValidationError("Email domain is not allowed. Please use a valid email address.")
+        if domain != "uoi.gr":
+            raise ValidationError("Email domain is not allowed.")
         return email
 
-    def clean_new_password1(self):
-        password = self.cleaned_data.get("new_password1")
+    def clean_password1(self):
+        password = self.cleaned_data.get("password1")
         if password:
             result = zxcvbn(password)
             if result["score"] < 3:  # 0 – 4 (=5 levels)
@@ -44,11 +43,10 @@ class EmailUpdateForm(forms.ModelForm):
         fields = ("email",)
 
     def clean_email(self):
-        allowed_domains = ["uoi.gr", "gmail.com", "apple.com", "outlook.com"]
         email = self.cleaned_data.get("email")
         domain = email.split("@")[-1]
-        if domain not in allowed_domains:
-            raise ValidationError("Email domain is not allowed. Please use a valid email address.")
+        if domain != "uoi.gr":
+            raise ValidationError("Email domain is not allowed.")
         return email
 
 
