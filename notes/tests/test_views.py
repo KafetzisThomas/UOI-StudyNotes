@@ -1,4 +1,6 @@
-from django.test import TestCase
+import shutil
+import tempfile
+from django.test import TestCase, override_settings
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.contrib.auth import get_user_model
 from django.urls import reverse
@@ -6,7 +8,10 @@ from ..models import Note
 
 User = get_user_model()
 
+TEMP_MEDIA_ROOT = tempfile.mkdtemp()
 
+
+@override_settings(MEDIA_ROOT=TEMP_MEDIA_ROOT)
 class NotesViewTests(TestCase):
 
     def setUp(self):
@@ -65,7 +70,13 @@ class NotesViewTests(TestCase):
         response = self.client.get(self.url, {"page": 2})
         self.assertEqual(len(response.context["page"]), 2)
 
+    @classmethod
+    def tearDownClass(cls):
+        shutil.rmtree(TEMP_MEDIA_ROOT, ignore_errors=True)
+        super().tearDownClass()
 
+
+@override_settings(MEDIA_ROOT=TEMP_MEDIA_ROOT)
 class NoteViewTests(TestCase):
 
     def setUp(self):
@@ -99,6 +110,11 @@ class NoteViewTests(TestCase):
         self.client.post(self.url, {"content": "This is a test comment."})
         self.assertEqual(self.note.comments.count(), 1)
 
+    @classmethod
+    def tearDownClass(cls):
+        shutil.rmtree(TEMP_MEDIA_ROOT, ignore_errors=True)
+        super().tearDownClass()
+
 
 class LikeNoteViewTests(TestCase):
 
@@ -124,6 +140,7 @@ class LikeNoteViewTests(TestCase):
         self.assertFalse(self.note.likes.filter(id=self.user.id).exists())
 
 
+@override_settings(MEDIA_ROOT=TEMP_MEDIA_ROOT)
 class NewNoteViewTests(TestCase):
 
     def setUp(self):
@@ -149,7 +166,13 @@ class NewNoteViewTests(TestCase):
         self.assertEqual(Note.objects.first().user, self.user)
         self.assertRedirects(response, reverse("notes:notes"))
 
+    @classmethod
+    def tearDownClass(cls):
+        shutil.rmtree(TEMP_MEDIA_ROOT, ignore_errors=True)
+        super().tearDownClass()
 
+
+@override_settings(MEDIA_ROOT=TEMP_MEDIA_ROOT)
 class EditNoteViewTests(TestCase):
 
     def setUp(self):
@@ -198,6 +221,11 @@ class EditNoteViewTests(TestCase):
         self.assertEqual(self.note.content, data["content"])
         self.assertTrue(self.note.file.name.startswith("uploads/"))
         self.assertEqual(self.note.file.read(), b"Updated file content.")
+
+    @classmethod
+    def tearDownClass(cls):
+        shutil.rmtree(TEMP_MEDIA_ROOT, ignore_errors=True)
+        super().tearDownClass()
 
 
 class DeleteNoteViewTests(TestCase):
