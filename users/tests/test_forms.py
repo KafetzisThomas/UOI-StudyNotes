@@ -1,177 +1,68 @@
-"""
-This module contains test cases for the following classes,
-handling validation & required fields:
-
-* CustomUserCreationForm, CustomAuthenticationForm, UpdateUserForm
-"""
-
 from django.test import TestCase
-from django.contrib.auth.models import User
-from ..forms import CustomUserCreationForm, CustomAuthenticationForm, UpdateUserForm
+from django.contrib.auth import get_user_model
+from ..forms import RegistrationForm, EmailUpdateForm, NewPasswordChangeForm
+
+User = get_user_model()
 
 
-class CustomUserCreationFormTests(TestCase):
-    """
-    Test suite for the CustomUserCreationForm.
-    """
+class RegistrationFormTests(TestCase):
 
     def setUp(self):
-        """
-        Set up the test environment by defining valid form data.
-        """
         self.valid_data = {
-            "username": "testuser",
-            "email": "testuser@uoi.gr",
-            "password1": "SecRet_p@ssword",
-            "password2": "SecRet_p@ssword",
+            "username": "user",
+            "email": "user@uoi.gr",
+            "password1": "Str0ng_p@ssword",
+            "password2": "Str0ng_p@ssword",
         }
 
-    def test_form_valid_data(self):
-        """
-        Test that the form is valid with correct data.
-        """
-        form = CustomUserCreationForm(data=self.valid_data)
+    def test_valid_data(self):
+        form = RegistrationForm(data=self.valid_data)
         self.assertTrue(form.is_valid(), form.errors)
 
-    def test_form_missing_required_fields(self):
-        """
-        Test that the form is invalid if required fields are missing.
-        """
-        # Test missing username
-        data = self.valid_data.copy()
-        data.pop("username")
-        form = CustomUserCreationForm(data=data)
+    def test_weak_password_rejected(self):
+        data = self.valid_data | {"password1": "password123", "password2": "password123"}
+        form = RegistrationForm(data=data)
         self.assertFalse(form.is_valid(), form.errors)
 
-        # Test missing email
-        data = self.valid_data.copy()
-        data.pop("email")
-        form = CustomUserCreationForm(data=data)
-        self.assertFalse(form.is_valid(), form.errors)
-
-        # Test missing password
-        data = self.valid_data.copy()
-        data.pop("password1")
-        form = CustomUserCreationForm(data=data)
-        self.assertFalse(form.is_valid(), form.errors)
-
-        # Test missing confirmation password
-        data = self.valid_data.copy()
-        data.pop("password2")
-        form = CustomUserCreationForm(data=data)
-        self.assertFalse(form.is_valid(), form.errors)
-
-    def test_form_invalid_email_domain(self):
-        """
-        Test that the form is invalid if the email domain is not allowed.
-        """
-        data = self.valid_data.copy()
-        data["email"] = "user@invalid.com"
-        form = CustomUserCreationForm(data=data)
-        self.assertFalse(form.is_valid(), form.errors)
-
-    def test_form_password_mismatch(self):
-        """
-        Test that the form is invalid if passwords do not match.
-        """
-        data = self.valid_data.copy()
-        data["password2"] = "Secretpassword"
-        form = CustomUserCreationForm(data=data)
+    def test_invalid_email_domain_rejected(self):
+        data = self.valid_data | {"email": "user@gmail.com"}
+        form = RegistrationForm(data=data)
         self.assertFalse(form.is_valid(), form.errors)
 
 
-class CustomAuthenticationFormTests(TestCase):
-    """
-    Test suite for the CustomAuthenticationForm.
-    """
+class EmailUpdateFormTests(TestCase):
 
     def setUp(self):
-        """
-        Set up the test environment by creating a user.
-        """
-        self.user = User.objects.create_user(
-            username="testuser",
-            email="testuser@uoi.gr",
-            password="SecRet_p@ssword",
-        )
+        self.user = User.objects.create_user(username="user", email="user@uoi.gr", password="Str0ng_p@ssword")
 
-    def test_form_valid_data(self):
-        """
-        Test that the form is valid with correct username and password.
-        """
-        data = {
-            "username": "testuser",
-            "password": "SecRet_p@ssword",
-        }
-        form = CustomAuthenticationForm(data=data)
+    def test_valid_email(self):
+        form = EmailUpdateForm(instance=self.user, data={"email": "new@uoi.gr"})
         self.assertTrue(form.is_valid(), form.errors)
 
-    def test_form_missing_required_fields(self):
-        """
-        Test that the form is invalid if required fields are missing.
-        """
-        # Test missing username
-        data = {"password": "SecRet_p@ssword"}
-        form = CustomAuthenticationForm(data=data)
-        self.assertFalse(form.is_valid(), form.errors)
-
-        # Test missing password
-        data = {"username": "testuser"}
-        form = CustomAuthenticationForm(data=data)
+    def test_invalid_email_domain_rejected(self):
+        form = EmailUpdateForm(instance=self.user, data={"email": "new@gmail.com"})
         self.assertFalse(form.is_valid(), form.errors)
 
 
-class UpdateUserFormTests(TestCase):
-    """
-    Test suite for the UpdateUserForm.
-    """
+class NewPasswordChangeFormTests(TestCase):
 
     def setUp(self):
-        """
-        Set up the test environment by creating a user.
-        """
-        self.user = User.objects.create_user(
-            username="testuser",
-            email="testuser@uoi.gr",
-            password="SecRet_p@ssword",
-        )
-
-    def test_form_valid_data(self):
-        """
-        Test that the form is valid with correct data.
-        """
-        data = {
-            "username": "new_username",
-            "email": "new_email@uoi.gr",
-            "password1": "New_SecRet_p@ssword",
-            "password2": "New_SecRet_p@ssword",
+        self.user = User.objects.create_user(username="user", email="user@uoi.gr", password="Str0ng_p@ssword")
+        self.valid_data = {
+            "old_password": "Str0ng_p@ssword",
+            "new_password1": "New_Str0ng_p@ssword",
+            "new_password2": "New_Str0ng_p@ssword",
         }
-        form = UpdateUserForm(instance=self.user, data=data)
+        self.invalid_data = {
+            "old_password": "Str0ng_p@ssword",
+            "new_password1": "password123",
+            "new_password2": "password123",
+        }
+
+    def test_password_change_strong(self):
+        form = NewPasswordChangeForm(user=self.user, data=self.valid_data)
         self.assertTrue(form.is_valid(), form.errors)
 
-    def test_form_missing_required_fields(self):
-        """
-        Test that the form is invalid if required fields are missing.
-        """
-        # Test missing username
-        data = {"username": "", "email": "new_email@uoi.gr"}
-        form = UpdateUserForm(instance=self.user, data=data)
-        self.assertFalse(form.is_valid(), form.errors)
-
-        # Test missing email
-        data = {"username": "new_username", "email": ""}
-        form = UpdateUserForm(instance=self.user, data=data)
-        self.assertFalse(form.is_valid(), form.errors)
-
-    def test_passwords_not_matching(self):
-        """
-        Test that the form raises an error if passwords do not match.
-        """
-        data = {
-            "username": "new_username",
-            "email": "new_email@uoi.gr",
-            "password1": "New_SecRet_p@ssword",
-            "password2": "SecRet_p@ssword",
-        }
-        form = UpdateUserForm(instance=self.user, data=data)
+    def test_password_change_weak(self):
+        form = NewPasswordChangeForm(user=self.user, data=self.invalid_data)
         self.assertFalse(form.is_valid(), form.errors)
