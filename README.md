@@ -23,7 +23,7 @@
 
 ## Database Schema
 
-![Database Schema](https://github.com/user-attachments/assets/0933c9db-9f23-49d0-a89a-c17e098d2fb2)
+![Database Schema](/assets/db_schema.png)
 
 ## Usage
 
