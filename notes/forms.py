@@ -13,13 +13,7 @@ class NoteForm(forms.ModelForm):
 
 
 class CommentForm(forms.ModelForm):
-    content = forms.CharField(
-        label="Write your comment here",
-        widget=forms.Textarea(
-            attrs={"rows": 10}
-        ),
-        required=True,
-    )
+    content = forms.CharField(label="Write your comment here", widget=forms.Textarea(attrs={"rows": 10}), required=True)
 
     class Meta:
         model = Comment
