@@ -1,6 +1,7 @@
 <div align="center">
     <img src="static/favicon.png" width="150"/>
     <p><strong>UOI-StudyNotes: </strong>A notes archive app for UOI students.<br>Written in Python/Django</p>
+    <img src="https://github.com/KafetzisThomas/UOI-StudyNotes/actions/workflows/tests.yml/badge.svg"/>
 </div>
 
 ## Overview
