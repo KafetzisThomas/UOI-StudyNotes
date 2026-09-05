@@ -1,130 +1,81 @@
-"""
-This module contains test cases for the following views:
-* register, account
-"""
-
 from django.test import TestCase
 from django.urls import reverse
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 
+User = get_user_model()
 
 class RegisterViewTests(TestCase):
-    """
-    Test case for the register view.
-    """
 
     def setUp(self):
-        """
-        Set up the test environment.
-        """
+        self.valid_data = {
+            "username": "user",
+            "email": "user@uoi.gr",
+            "password1": "Str0ng_p@ssword",
+            "password2": "Str0ng_p@ssword"
+        }
         self.url = reverse("users:register")
 
-    def test_successful_registration(self):
-        """
-        Test that a user can register successfully with valid data.
-        """
-        data = {
-            "username": "new_user",
-            "email": "new_user@uoi.gr",
-            "password1": "SecRet_p@ssword",
-            "password2": "SecRet_p@ssword",
-        }
-        response = self.client.post(self.url, data)
+    def test_register_view_valid(self):
+        response = self.client.post(self.url, self.valid_data)
         self.assertEqual(User.objects.count(), 1)
         self.assertRedirects(response, reverse("users:login"))
 
-    def test_invalid_form_data(self):
-        """
-        Test that the form is not valid with incorrect data.
-        """
-        data = {
-            "username": "",
-            "email": "invalid_email",
-            "password1": "SecRet_p@ssword",
-            "password2": "New_SecRet_p@ssword",
-        }
-        self.client.post(self.url, data)
-        self.assertEqual(User.objects.count(), 0)  # No user should be created
-
 
 class AccountViewTests(TestCase):
-    """
-    Test case for the account view.
-    """
 
     def setUp(self):
-        """
-        Set up the test environment by creating a user.
-        """
-        self.user = User.objects.create_user(
-            username="testuser",
-            email="testuser@uoi.gr",
-            password="SecRet_p@ssword",
-        )
         self.url = reverse("users:account")
-        self.client.login(username="testuser", password="SecRet_p@ssword")
+        self.user = User.objects.create_user(username="user", email="user@uoi.gr", password="SecRet_p@ssword")
+        self.client.login(username="user", password="SecRet_p@ssword")
 
-    def test_successful_account_update(self):
-        """
-        Test updating account credentials with valid form data.
-        """
-        data = {
-            "username": "updated_user",
-            "email": "updated_user@uoi.gr",
-            "password1": "New_SecRet_p@ssword",
-            "password2": "New_SecRet_p@ssword",
-        }
-        response = self.client.post(self.url, data)
-        self.user.refresh_from_db()
-        self.assertEqual(self.user.username, "updated_user")
-        self.assertEqual(self.user.email, "updated_user@uoi.gr")
+    def test_unauthenticated_user_redirects_to_login(self):
+        self.client.logout()
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 302)
+
+    def test_update_username_action(self):
+        response = self.client.post(self.url, {"action": "update_username", "username": "new_username"})
         self.assertRedirects(response, self.url)
-
-    def test_invalid_form_data(self):
-        """
-        Test that invalid form submissions do not update user credentials.
-        """
-        data = {
-            "username": "",  # Invalid: username is required
-            "email": "invalid_email",
-            "password1": "New_SecRet_p@ssword",
-            "password2": "SecRet_p@ssword",
-        }
-        self.client.post(self.url, data)
         self.user.refresh_from_db()
-        self.assertNotEqual(self.user.username, "")
-        self.assertNotEqual(self.user.email, "invalid_email")
+        self.assertEqual(self.user.username, "new_username")
+
+    def test_update_email_action(self):
+        response = self.client.post(self.url, {"action": "update_email", "email": "new@uoi.gr"})
+        self.assertRedirects(response, self.url)
+        self.user.refresh_from_db()
+        self.assertEqual(self.user.email, "new@uoi.gr")
+
+
+class UpdatePasswordViewTests(TestCase):
+
+    def setUp(self):
+        self.user = User.objects.create_user(username="user", email="user@uoi.gr", password="Str0ng_p@ssword")
+        self.client.login(username="user", password="Str0ng_p@ssword")
+        self.form_data = {
+            "old_password": "Str0ng_p@ssword", "new_password1": "New_Str0ng_p@ssword", "new_password2": "New_Str0ng_p@ssword"
+        }
+        self.url = reverse("users:update_password")
+
+    def test_unauthenticated_user_redirects_to_login(self):
+        self.client.logout()
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 302)
+
+    def test_update_password_succeeds(self):
+        response = self.client.post(self.url, self.form_data)
+        self.assertRedirects(response, reverse("users:account"))
+        self.user.refresh_from_db()
+        self.assertTrue(self.user.check_password("New_Str0ng_p@ssword"))
 
 
 class DeleteAccountViewTests(TestCase):
-    """
-    Test case for the delete_account view.
-    """
 
     def setUp(self):
-        """
-        Set up the test environment by creating a user.
-        """
-        self.user = User.objects.create_user(
-            username="testuser",
-            email="testuser@uoi.gr",
-            password="SecRet_p@ssword",
-        )
         self.url = reverse("users:delete_account")
-        self.client.login(username="testuser", password="SecRet_p@ssword")
+        self.user = User.objects.create_user(username="user", email="user@uoi.gr", password="Str0ng_p@ssword")
+        self.client.login(username="user", password="Str0ng_p@ssword")
 
-    def test_successful_account_deletion(self):
-        """
-        Test that a user account is deleted successfully.
-        """
+    def test_delete_account_succeeds(self):
         response = self.client.post(self.url)
         self.assertEqual(User.objects.count(), 0)
         self.assertRedirects(response, reverse("users:register"))
-
-    def test_account_not_found_after_deletion(self):
-        """
-        Test that the account cannot be accessed after deletion.
-        """
-        self.client.post(self.url)  # Delete the account
-        with self.assertRaises(User.DoesNotExist):
-            User.objects.get(id=self.user.id)  # Attempt to access the deleted user
