@@ -1,6 +1,6 @@
 <div align="center">
-  <h1>UOI-StudyNotes</h1>
-  <p>A notes archive app for UOI students.<br>Written in Python/Django.</p>
+    <img src="static/favicon.png" width="150"/>
+    <p><strong>UOI-StudyNotes: </strong>A notes archive app for UOI students.<br>Written in Python/Django</p>
 </div>
 
 ## Overview
