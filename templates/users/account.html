@@ -43,7 +43,7 @@
                 </div>
                 <div class="modal-body">Deleting your account is permanent. It cannot be undone.</div>
                 <div class="modal-footer">
-                    <form method="post" action="{% url 'users:delete_account' %}" class="d-flex gap-2 w-100">
+                    <form method="POST" action="{% url 'users:delete_account' %}" class="d-flex gap-2 w-100">
                         {% csrf_token %}
                         <button type="button" class="btn btn-secondary flex-fill" data-bs-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-danger flex-fill">Delete Account</button>

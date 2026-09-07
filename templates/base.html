@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{% block title %}{% endblock title %}</title>
+    <title>UOI-StudyNotes - {% block title %}{% endblock title %}</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
@@ -62,8 +62,8 @@
                                     {% endfor %}
                                 </select>
 
-                                <input class="form-control form-control-sm ms-2 mt-1" type="search" name="search_query" placeholder="Search notes..."
-                                    value="{{ search_query|default:'' }}">
+                                <input class="form-control form-control-sm ms-2 mt-1" type="search" name="search" placeholder="Search notes..."
+                                    value="{{ search|default:'' }}">
 
                                 <button class="btn btn-sm btn-outline-secondary ms-2 mt-1 h-50" type="submit">Search</button>
                             </form>

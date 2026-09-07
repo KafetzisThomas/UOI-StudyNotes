@@ -7,13 +7,13 @@ User = get_user_model()
 class RegisterViewTests(TestCase):
 
     def setUp(self):
+        self.url = reverse("users:register")
         self.valid_data = {
             "username": "user",
             "email": "user@uoi.gr",
             "password1": "Str0ng_p@ssword",
             "password2": "Str0ng_p@ssword"
         }
-        self.url = reverse("users:register")
 
     def test_register_view_valid(self):
         response = self.client.post(self.url, self.valid_data)
@@ -49,12 +49,12 @@ class AccountViewTests(TestCase):
 class UpdatePasswordViewTests(TestCase):
 
     def setUp(self):
+        self.url = reverse("users:update_password")
         self.user = User.objects.create_user(username="user", email="user@uoi.gr", password="Str0ng_p@ssword")
         self.client.login(username="user", password="Str0ng_p@ssword")
         self.form_data = {
             "old_password": "Str0ng_p@ssword", "new_password1": "New_Str0ng_p@ssword", "new_password2": "New_Str0ng_p@ssword"
         }
-        self.url = reverse("users:update_password")
 
     def test_unauthenticated_user_redirects_to_login(self):
         self.client.logout()
