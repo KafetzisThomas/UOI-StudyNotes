@@ -11,7 +11,7 @@ def send_comment_notification(sender, receiver, note_url, comment):
     recipient_list = [receiver.email]
 
     html_message = render_to_string(
-        "email_templates/new_comment.html",
+        "emails/new_comment.html",
         {
             "sender": sender,
             "title": comment.note,
