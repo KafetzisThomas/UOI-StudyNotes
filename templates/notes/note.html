@@ -4,14 +4,6 @@
 {% block title %}{{ note.title }}{% endblock title %}
 
 {% block content %}
-    {% if messages %}
-        {% for message in messages %}
-            <div class="alert alert-success text-center" role="alert">
-                {{ message }}
-            </div>
-        {% endfor %}
-    {% endif %}
-
     <div class="container mt-4 mb-4">
         <div class="card mb-4">
             <div class="card-header align-items-center border rounded-top mb-0">
@@ -33,7 +25,7 @@
                 <div class="d-flex float-end mt-4">
                     {% if user.is_authenticated %}
                         {% if request.user == note.user %}
-                            <button class="btn btn-outline-secondary me-1" type="button" data-toggle="tooltip" title="Delete Note" data-bs-toggle="modal" data-bs-target="#delete_note_modal">
+                            <button class="btn btn-outline-secondary me-1" type="button" data-toggle="tooltip" title="Delete Note" data-bs-toggle="modal" data-bs-target="#deleteNoteModal">
                                 <i class="bi bi-trash"></i>
                             </button>
                             <a href="{% url 'notes:edit_note' note.id %}" class="btn btn-outline-secondary me-1" data-toggle="tooltip" title="Edit Note">

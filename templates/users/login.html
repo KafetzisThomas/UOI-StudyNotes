@@ -4,6 +4,14 @@
 {% block title %}Login{% endblock title %}
 
 {% block content %}
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %} text-center">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
     <h2>Log in to your account.</h2>
     <form method="POST" action="{% url 'users:login' %}">
         {% csrf_token %}
