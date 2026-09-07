@@ -49,7 +49,7 @@ def update_password(request):
         if form.is_valid():
             user = form.save()
             update_session_auth_hash(request, user)
-            messages.success(request, "Your password was successfully updated!")
+            messages.success(request, "Password updated successfully.")
             return redirect("users:account")
     else:
         form = NewPasswordChangeForm(request.user)
@@ -61,6 +61,7 @@ def update_password(request):
 def delete_account(request):
     user = request.user
     user.delete()
+    messages.success(request, "Account deleted successfully.")
     return redirect("users:register")
 
 
