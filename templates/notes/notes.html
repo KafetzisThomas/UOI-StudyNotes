@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}All Notes{% endblock title %}
+
+{% block content %}
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-success text-center" role="alert">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <h3 class="text-center">All Notes</h3>
+    <hr class="mb-2 mt-0">
+
+    {% for note in page %}
+        <article class="media note-section mb-4">
+            <div class="media-body">
+                <h2><a class="note-name" href="{% url 'notes:note' note.id %}">[{{ note.subject }}] {{ note.title }}</a></h2>
+                <p class="card-text">
+                    <small class="text-muted">
+                        By: {{ note.user.username }} | Department: {{ note.department }} | Comments: {{ note.comments.all|length }} | Likes: {{ note.number_of_likes }} | {{ note.timestamp|date:"d F, Y H:i" }}
+                    </small>
+                </p>
+            </div>
+        </article>
+    {% empty %}
+        <div class="container text-center mt-3">
+            <h5>There are no notes.</h5>
+        </div>
+    {% endfor %}
+    <div class="d-flex justify-content-center mt-4">
+        <ul class="pagination">
+            {% if page %}
+                <li class="page-item {% if not page.has_previous %}disabled{% endif %}">
+                    <a class="page-link" href="{% if page.has_previous %}?page={{ page.previous_page_number }}{% else %}#{% endif %}">&laquo;</a>
+                </li>
+                <li class="page-item {% if not page.has_next %}disabled{% endif %}">
+                    <a class="page-link" href="{% if page.has_next %}?page={{ page.next_page_number }}{% else %}#{% endif %}">&raquo;</a>
+                </li>
+            {% endif %}
+        </ul>
+    </div>
+{% endblock content %}

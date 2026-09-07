@@ -1,15 +1,17 @@
-from django.conf import settings
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
-
+from django.conf import settings
 
 def send_comment_notification(sender, receiver, note_url, comment):
+    if settings.DEBUG:
+        return
+
     subject = f'{sender}: Left a comment to your note - "{comment.note}"'
     email_from = settings.EMAIL_HOST_USER
     recipient_list = [receiver.email]
 
     html_message = render_to_string(
-        "email_templates/new_comment.html",
+        "emails/new_comment.html",
         {
             "sender": sender,
             "title": comment.note,
