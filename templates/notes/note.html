@@ -68,7 +68,7 @@
         <form class="collapse mt-4" id="CommentForm-{{ note.id }}" method="POST">
             {% csrf_token %}
             {{ form|crispy }}
-            <button type="submit" class="btn btn-success mt-2">Submit</button>
+            <button type="submit" class="btn btn-success mt-2 w-100">Submit</button>
         </form>
 
         <div class="modal fade" id="deleteNoteModal" tabindex="-1" aria-labelledby="deleteNoteModalLabel" aria-hidden="true">
