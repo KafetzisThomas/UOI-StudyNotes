@@ -4,7 +4,6 @@ from django.views.decorators.http import require_POST
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.core.paginator import Paginator
-from django.conf import settings
 from django.urls import reverse
 from .models import Note, DEPARTMENTS
 from .forms import NoteForm, CommentForm
@@ -47,7 +46,7 @@ def note(request, note_id):
             new_comment.save()
             note_url = reverse("notes:note", args=[note.id])
 
-            if not settings.DEBUG and new_comment.user != note.user:
+            if new_comment.user != note.user:
                 send_comment_notification(new_comment.user, note.user, note_url, new_comment)
 
             return redirect("notes:note", note_id=note_id)

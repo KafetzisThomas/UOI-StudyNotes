@@ -3,6 +3,9 @@ from django.template.loader import render_to_string
 from django.conf import settings
 
 def send_comment_notification(sender, receiver, note_url, comment):
+    if settings.DEBUG:
+        return
+
     subject = f'{sender}: Left a comment to your note - "{comment.note}"'
     email_from = settings.EMAIL_HOST_USER
     recipient_list = [receiver.email]
