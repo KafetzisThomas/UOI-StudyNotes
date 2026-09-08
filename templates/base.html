@@ -57,7 +57,7 @@
                             <form action="{% url 'notes:notes' %}" class="d-flex" method="GET">
                                 <select class="form-select form-select-sm ms-2 mt-1" name="department">
                                     <option value="" {% if not request.GET.department %}selected{% endif %}>All Departments</option>
-                                    {% for key, value in DEPARTMENTS %}
+                                    {% for key, value in departments %}
                                         <option value="{{ key }}" {% if request.GET.department == key %}selected{% endif %}>{{ value }}</option>
                                     {% endfor %}
                                 </select>
