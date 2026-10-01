@@ -12,7 +12,7 @@ dependencies = [
     "django-crispy-forms==2.7",
     "django-storages>=1.14.6",
     "django-summernote==0.8.20.0",
-    "gunicorn==26.0.0",
+    "gunicorn==26.2.0",
     "psycopg2-binary==2.9.12",
     "python-dotenv==1.2.3",
     "uvicorn==0.52.4",
