@@ -6,7 +6,7 @@ readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "boto3>=1.43.87",
-    "crispy-bootstrap5==2026.3",
+    "crispy-bootstrap5==2026.9",
     "dj-database-url==3.1.2",
     "django==6.1",
     "django-crispy-forms==2.7",
